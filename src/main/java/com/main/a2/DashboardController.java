@@ -11,12 +11,4 @@ import java.io.IOException;
 public class DashboardController {
     private Stage stage;
 
-    public void LogInScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 670, 487);
-        stage.setTitle("myTimetable - Sign In");
-        stage.setScene(scene);
-        stage.show();
-    }
 }

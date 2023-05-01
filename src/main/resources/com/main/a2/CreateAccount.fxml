@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="487.0" prefWidth="670.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.main.a2.DashboardController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="487.0" prefWidth="670.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.main.a2.CreateAccountController">
    <left>
       <AnchorPane prefHeight="487.0" prefWidth="271.0" style="-fx-background-color: #E52A21;" BorderPane.alignment="CENTER">
          <children>
@@ -29,45 +29,51 @@
    <right>
       <AnchorPane prefHeight="487.0" prefWidth="472.0" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="64.0" layoutY="26.0" prefHeight="66.0" prefWidth="271.0" text="Create Account" textAlignment="CENTER">
+            <Label layoutX="64.0" layoutY="26.0" prefHeight="66.0" prefWidth="259.0" text="Create Account" textAlignment="CENTER">
                <font>
                   <Font name="Arial" size="37.0" />
                </font>
             </Label>
-            <TextField fx:id="fieldCreateUsername" layoutX="138.0" layoutY="123.0" />
-            <Label layoutX="36.0" layoutY="120.0" text="Username:">
+            <TextField fx:id="fieldCreateUsername" layoutX="168.0" layoutY="114.0" />
+            <Label layoutX="66.0" layoutY="111.0" text="Username:">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <TextField fx:id="fieldCreatePassword" layoutX="138.0" layoutY="184.0" />
-            <Label layoutX="33.0" layoutY="182.0" text="First Name:">
+            <TextField fx:id="fieldCreateFirstName" layoutX="169.0" layoutY="201.0" />
+            <Label layoutX="64.0" layoutY="199.0" text="First Name:">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <TextField fx:id="fieldCreatePassword1" layoutX="138.0" layoutY="246.0" />
-            <TextField fx:id="fieldCreatePassword2" layoutX="138.0" layoutY="303.0" />
-            <Label layoutX="34.0" layoutY="244.0" text="Last Name:">
+            <TextField fx:id="fieldCreateLastName" layoutX="169.0" layoutY="246.0" />
+            <TextField fx:id="fieldCreateStudentId" layoutX="169.0" layoutY="156.0" />
+            <Label layoutX="65.0" layoutY="244.0" text="Last Name:">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="34.0" layoutY="301.0" text="Student ID:">
+            <Label layoutX="65.0" layoutY="154.0" text="Student ID:">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button fx:id="btnCreateAccount" layoutX="127.0" layoutY="362.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="145.0" text="Create Account">
+            <Button fx:id="btnCreateAccount" layoutX="127.0" layoutY="382.0" mnemonicParsing="false" onAction="#CreateAccount" prefHeight="36.0" prefWidth="145.0" text="Create Account">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="btnGoBack" layoutX="160.0" layoutY="418.0" mnemonicParsing="false" onAction="#LogInScene" text="Go Back">
+            <Button fx:id="btnGoBack" layoutX="160.0" layoutY="438.0" mnemonicParsing="false" onAction="#LogInScene" text="Go Back">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
+            <TextField fx:id="fieldCreatePassword" layoutX="169.0" layoutY="289.0" />
+            <Label layoutX="65.0" layoutY="286.0" text="Password:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </right>

@@ -10,14 +10,15 @@ public class DatabaseConnect {
             conn = DriverManager.getConnection(url);
             System.out.println("Should be connected to database");
 
-            String command = "SELECT * FROM courses";
+            /*String command = "SELECT * FROM courses";
             Statement state = conn.createStatement();
             ResultSet rs = state.executeQuery(command);
 
             while (rs.next()) {
                 System.out.println(rs.getString("course_name"));
             }
-            state.close();
+            state.close();*/
+            System.out.println("Now closing");
             conn.close();
 
         } catch (SQLException e) {

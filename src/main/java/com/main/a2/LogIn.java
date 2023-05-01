@@ -17,7 +17,8 @@ public class LogIn extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Sign In");
-        stage.getIcons().add(new Image("src\\main\\resources\\com\\main\\a2\\emb.jpg"));
+        Image image = new Image("https://i.imgur.com/1vB2hyF.png");
+        stage.getIcons().add(image);
         stage.setScene(scene);
         stage.show();
     }
