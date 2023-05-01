@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="517.0" prefWidth="1110.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.main.a2.Dashboard">
    <top>
       <AnchorPane prefHeight="124.0" prefWidth="1040.0" style="-fx-background-color: #E52A21;" BorderPane.alignment="CENTER">
@@ -90,7 +89,7 @@
    <bottom>
       <AnchorPane prefHeight="95.0" prefWidth="1007.0" style="-fx-background-color: #0f0d4c;" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="fieldSearch" layoutX="137.0" layoutY="11.0" prefHeight="25.0" prefWidth="200.0" />
+            <TextField fx:id="fieldSearch" layoutX="137.0" layoutY="11.0" prefHeight="25.0" prefWidth="284.0" />
             <Label layoutX="14.0" layoutY="10.0" text="Course Search:" textFill="WHITE">
                <font>
                   <Font size="18.0" />
@@ -106,7 +105,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnLogOut" layoutX="886.0" layoutY="30.0" mnemonicParsing="false" onAction="#LogInScene" text="Log Out">
+            <Button fx:id="btnLogOut" layoutX="993.0" layoutY="29.0" mnemonicParsing="false" onAction="#LogInScene" text="Log Out">
                <font>
                   <Font size="18.0" />
                </font>
@@ -116,12 +115,12 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnEnroll1" layoutX="358.0" layoutY="35.0" mnemonicParsing="false" text="Show Enrolled Courses">
+            <Button fx:id="btnEnroll1" layoutX="457.0" layoutY="48.0" mnemonicParsing="false" text="Show Enrolled Courses">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnEnroll11" layoutX="530.0" layoutY="35.0" mnemonicParsing="false" text="Withdraw">
+            <Button fx:id="btnEnroll11" layoutX="344.0" layoutY="48.0" mnemonicParsing="false" text="Withdraw">
                <font>
                   <Font size="14.0" />
                </font>
