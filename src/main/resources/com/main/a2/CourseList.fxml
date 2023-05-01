@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="517.0" prefWidth="1110.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.main.a2.CourseListController">
+   <top>
+      <AnchorPane prefHeight="124.0" prefWidth="1040.0" style="-fx-background-color: #E52A21;" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="226.0" layoutY="36.0" text="Course List" textFill="WHITE">
+               <font>
+                  <Font size="29.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@logo.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="468.0" layoutY="23.0" text="Username: " textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="468.0" layoutY="66.0" text="Student ID: " textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="746.0" layoutY="23.0" text="First Name: " textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="747.0" layoutY="66.0" text="Last Name: " textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="txtUsername" layoutX="565.0" layoutY="23.0" text="thisismyusername" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="txtStudentId" layoutX="569.0" layoutY="66.0" text="s3931227" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="txtFirstName" layoutX="853.0" layoutY="23.0" text="Christopher" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="txtLastName" layoutX="853.0" layoutY="66.0" text="Christopher" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="tableCourses" prefHeight="298.0" prefWidth="1007.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+              <columns>
+                <TableColumn fx:id="courseName" prefWidth="322.0" text="Course" />
+                <TableColumn fx:id="capacity" prefWidth="99.0" text="Capacity" />
+                  <TableColumn fx:id="slotsLeft" prefWidth="93.0" text="Open/Closed" />
+                  <TableColumn fx:id="year" prefWidth="114.0" text="Year" />
+                  <TableColumn fx:id="delivery" prefWidth="137.0" text="Delivery" />
+                  <TableColumn fx:id="day" prefWidth="117.0" text="Day" />
+                  <TableColumn fx:id="time" prefWidth="108.0" text="Time" />
+                  <TableColumn fx:id="duration" prefWidth="119.0" text="Duration (hours)" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </center>
+   <bottom>
+      <AnchorPane prefHeight="95.0" prefWidth="1007.0" style="-fx-background-color: #0f0d4c;" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="fieldSearch" layoutX="137.0" layoutY="11.0" prefHeight="25.0" prefWidth="200.0" />
+            <Label layoutX="14.0" layoutY="10.0" text="Course Search:" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnSearch" layoutX="137.0" layoutY="48.0" mnemonicParsing="false" onAction="#SearchCourses" text="Search">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnShowAll" layoutX="205.0" layoutY="48.0" mnemonicParsing="false" onAction="#ShowAllCourses" text="Show All">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnLogOut" layoutX="886.0" layoutY="30.0" mnemonicParsing="false" onAction="#LogInScene" text="Log Out">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnEnroll" layoutX="285.0" layoutY="48.0" mnemonicParsing="false" text="Enroll">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnEnroll1" layoutX="358.0" layoutY="35.0" mnemonicParsing="false" text="Show Enrolled Courses">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnEnroll11" layoutX="530.0" layoutY="35.0" mnemonicParsing="false" text="Withdraw">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>
