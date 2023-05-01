@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CourseListController implements Initializable {
+public class Dashboard implements Initializable {
     private Stage stage;
     private String searchTerm;
     private ObservableList<Course> courses = FXCollections.observableArrayList();

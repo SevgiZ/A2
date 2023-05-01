@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CreateAccountController {
+public class DashboardController {
     private Stage stage;
 
     public void LogInScene(ActionEvent event) throws IOException {
