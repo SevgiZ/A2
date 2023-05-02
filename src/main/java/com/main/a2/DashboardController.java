@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -65,6 +62,18 @@ public class DashboardController implements Initializable {
     @FXML
     private TableColumn<Course, String> year;
 
+    @FXML
+    private Label txtFirstName;
+
+    @FXML
+    private Label txtLastName;
+
+    @FXML
+    private Label txtStudentId;
+
+    @FXML
+    private Label txtUsername;
+
     public void LogInScene(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -94,11 +103,48 @@ public class DashboardController implements Initializable {
                 time.setCellValueFactory(new PropertyValueFactory<Course, String>("time"));
                 duration.setCellValueFactory(new PropertyValueFactory<Course, Double>("duration"));
             }
+
+            CurrentUserHolder holder = CurrentUserHolder.getCurrentUser();
+            CurrentUser user = holder.getUser();
+
+            txtFirstName.setText(user.getFirstName());
+            txtLastName.setText(user.getLastName());
+            txtUsername.setText(user.getUsername());
+            txtStudentId.setText(user.getUserId());
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
         tableCourses.setItems(courses);
+    }
+
+    public void enrollButton() throws SQLException {
+        Course c = tableCourses.getSelectionModel().getSelectedItem();
+        System.out.println(c.getName());
+
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+        String query = "INSERT INTO ";
+        Statement state = conn.createStatement();
+        ResultSet rs = state.executeQuery(query);
+
+
+    }
+
+    public void SignOut(ActionEvent event) throws IOException {
+        //Erase current user details
+        //CurrentUser u = new CurrentUser();
+        //CurrentUserHolder holder = CurrentUserHolder.getCurrentUser();
+        //holder.setCurrentUser(u);
+
+        CurrentUser.ResetUser();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader.load(), 670, 487);
+        stage.setTitle("myTimetable - Sign In");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void SearchCourses() {

@@ -38,9 +38,6 @@ public class LogInController {
     private Label txtLoginError;
 
 
-
-
-
     /*public void LogInScene(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("CourseList.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -66,6 +63,18 @@ public class LogInController {
         password = fieldPassword.getText();
 
         if (VerifyPassword(conn, password) && VerifyUsername(conn, username)) {
+            state = conn.createStatement();
+            ResultSet rs = state.executeQuery("SELECT * FROM students WHERE username LIKE '%" + username + "%'");
+
+            while (rs.next()) {
+                CurrentUser user = new CurrentUser(rs.getString("username"), rs.getString("first_name"),
+                     rs.getString("last_name"), rs.getString("student_id"));
+
+            CurrentUser.SetUserInstance(user);
+            System.out.println(user);
+        }
+
+
             FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("CourseList.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(fxmlLoader.load(), 1110, 517);

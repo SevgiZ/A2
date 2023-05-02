@@ -29,8 +29,6 @@ public class LoadCoursesFromDB {
         } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println("DB LOAD:::"+courseList);
-        System.out.println("DB LOAD:" + courseList.get(0).getSlotsLeft());
         return courseList;
 
 

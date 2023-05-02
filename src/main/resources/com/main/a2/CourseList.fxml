@@ -105,12 +105,12 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnLogOut" layoutX="993.0" layoutY="29.0" mnemonicParsing="false" onAction="#LogInScene" text="Log Out">
+            <Button fx:id="btnLogOut" layoutX="993.0" layoutY="29.0" mnemonicParsing="false" onAction="#SignOut" text="Log Out">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="btnEnroll" layoutX="285.0" layoutY="48.0" mnemonicParsing="false" text="Enroll">
+            <Button fx:id="btnEnroll" layoutX="285.0" layoutY="48.0" mnemonicParsing="false" onAction="#enrollButton" text="Enroll">
                <font>
                   <Font size="14.0" />
                </font>
