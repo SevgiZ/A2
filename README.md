@@ -25,4 +25,5 @@ MVC view
 Code refactoring
 
 Encrypted passwords*
+
 Change font size, type, style and color*
