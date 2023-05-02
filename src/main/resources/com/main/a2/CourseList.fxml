@@ -75,7 +75,7 @@
               <columns>
                 <TableColumn fx:id="courseName" prefWidth="322.0" text="Course" />
                 <TableColumn fx:id="capacity" prefWidth="99.0" text="Capacity" />
-                  <TableColumn fx:id="slotsLeft" prefWidth="93.0" text="Open/Closed" />
+                  <TableColumn fx:id="openclosed" prefWidth="93.0" text="Open/Closed" />
                   <TableColumn fx:id="year" prefWidth="114.0" text="Year" />
                   <TableColumn fx:id="delivery" prefWidth="137.0" text="Delivery" />
                   <TableColumn fx:id="day" prefWidth="117.0" text="Day" />

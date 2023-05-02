@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 public class Dashboard implements Initializable {
@@ -38,7 +39,7 @@ public class Dashboard implements Initializable {
     private TableColumn<Course, String> capacity;
 
     @FXML
-    private TableColumn<Course, String> slotsLeft;
+    private TableColumn<Course, String> openclosed;
 
     @FXML
     private TableColumn<Course, String> courseName;
@@ -75,17 +76,27 @@ public class Dashboard implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        courses = LoadCourses.Load(courses);
-        System.out.println(courses);
 
-        courseName.setCellValueFactory(new PropertyValueFactory<Course, String>("name"));
-        capacity.setCellValueFactory(new PropertyValueFactory<Course, String>("capacity"));
-        slotsLeft.setCellValueFactory(new PropertyValueFactory<Course, String>("slotsLeft"));
-        year.setCellValueFactory(new PropertyValueFactory<Course, String>("year"));
-        delivery.setCellValueFactory(new PropertyValueFactory<Course, String>("delivery"));
-        day.setCellValueFactory(new PropertyValueFactory<Course, String>("day"));
-        time.setCellValueFactory(new PropertyValueFactory<Course, String>("time"));
-        duration.setCellValueFactory(new PropertyValueFactory<Course, Double>("duration"));
+        try {
+            courses = LoadCoursesFromDB.Load(courses);
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+            String query = "SELECT * FROM courses";
+            Statement state = conn.createStatement();
+            ResultSet rs = state.executeQuery(query);
+
+            while (rs.next()) {
+                courseName.setCellValueFactory(new PropertyValueFactory<Course, String>("name"));
+                capacity.setCellValueFactory(new PropertyValueFactory<Course, String>("capacity"));
+                openclosed.setCellValueFactory(new PropertyValueFactory<Course, String>("slotsLeft"));
+                year.setCellValueFactory(new PropertyValueFactory<Course, String>("year"));
+                delivery.setCellValueFactory(new PropertyValueFactory<Course, String>("delivery"));
+                day.setCellValueFactory(new PropertyValueFactory<Course, String>("day"));
+                time.setCellValueFactory(new PropertyValueFactory<Course, String>("time"));
+                duration.setCellValueFactory(new PropertyValueFactory<Course, Double>("duration"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         tableCourses.setItems(courses);
     }

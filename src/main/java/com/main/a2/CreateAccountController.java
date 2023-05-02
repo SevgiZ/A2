@@ -60,10 +60,12 @@ public class CreateAccountController {
     }
 
     public void CreateAccount() throws SQLException {
-        System.out.println("Connecting to DB");
+        System.out.println("Connecting to DB CREATE ACCOUNT");
         try {
             Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-            System.out.println("Connected to database");
+            if (conn != null) {
+                System.out.println("DB CREATE ACCOUNT: Connected to database");
+            }
 
             username = fieldCreateUsername.getText();
             studentId = fieldCreateStudentId.getText();
@@ -77,8 +79,8 @@ public class CreateAccountController {
 
             if (!userCheck && !idCheck) {
 
-                String query = "INSERT INTO students VALUES ('" + username + "', '" + studentId + "', '" + firstName + "', '" + lastName + "', '" + password + "'" +
-                        ")";
+                String query = "INSERT INTO students VALUES ('" + username + "', '" + studentId +
+                        "', '" + firstName + "', '" + lastName + "', '" + password + "'" + ")";
                 System.out.println(query);
                 Statement state = conn.createStatement();
                 state.executeUpdate(query);
@@ -104,10 +106,11 @@ public class CreateAccountController {
             System.out.println(rs.getString("username"));
             if (rs.getString("username").equals(username)) {
                 txtUsernameError.setText("Username already taken!");
+                conn.close();
                 return true;
             }
         }
-        System.out.println("returning false");
+        txtUsernameError.setText("");
         return false;
     }
 
@@ -119,11 +122,12 @@ public class CreateAccountController {
         while (rs.next()) {
             System.out.println(rs.getString("student_id"));
             if (rs.getString("student_id").equals(studentId)) {
+                conn.close();
                 txtIdError.setText("Student ID already taken or invalid!");
                 return true;
             }
         }
-        System.out.println("returning false");
+        txtIdError.setText("");
         return false;
     }
 
