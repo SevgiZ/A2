@@ -25,12 +25,12 @@
                   <Image url="@logo.png" />
                </image>
             </ImageView>
-            <Label layoutX="468.0" layoutY="23.0" text="Username: " textFill="WHITE">
+            <Label layoutX="460.0" layoutY="23.0" text="Username: " textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="468.0" layoutY="66.0" text="Student ID: " textFill="WHITE">
+            <Label layoutX="460.0" layoutY="66.0" text="Student ID: " textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -45,22 +45,22 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="txtUsername" layoutX="565.0" layoutY="23.0" text="thisismyusername" textFill="WHITE">
+            <Label fx:id="txtUsername" layoutX="555.0" layoutY="23.0" text="thisismyusername" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="txtStudentId" layoutX="569.0" layoutY="66.0" text="s3931227" textFill="WHITE">
+            <Label fx:id="txtStudentId" layoutX="561.0" layoutY="66.0" text="s3931227" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="txtFirstName" layoutX="853.0" layoutY="23.0" text="Christopher" textFill="WHITE">
+            <Label fx:id="txtFirstName" layoutX="848.0" layoutY="23.0" text="Christopher" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="txtLastName" layoutX="853.0" layoutY="66.0" text="Christopher" textFill="WHITE">
+            <Label fx:id="txtLastName" layoutX="848.0" layoutY="66.0" text="Christopher" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
@@ -110,7 +110,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="btnEnroll" layoutX="285.0" layoutY="48.0" mnemonicParsing="false" onAction="#enrollButton" text="Enroll">
+            <Button fx:id="btnEnroll" layoutX="285.0" layoutY="48.0" mnemonicParsing="false" onAction="#Enroll" text="Enroll">
                <font>
                   <Font size="14.0" />
                </font>
@@ -120,7 +120,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnEnroll11" layoutX="344.0" layoutY="48.0" mnemonicParsing="false" text="Withdraw">
+            <Button fx:id="btnWithdraw" layoutX="344.0" layoutY="48.0" mnemonicParsing="false" onAction="#Withdraw" text="Withdraw">
                <font>
                   <Font size="14.0" />
                </font>

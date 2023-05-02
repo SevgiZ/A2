@@ -124,7 +124,7 @@ public class DashboardController implements Initializable {
         tableCourses.setItems(courses);
     }
 
-    public void enrollButton() throws SQLException {
+    public void Enroll() throws SQLException {
         //course_id = GetDbCourseId();
 
         System.out.println(CurrentUser.getUserId());
@@ -142,8 +142,22 @@ public class DashboardController implements Initializable {
         state.close();
 
         System.out.println("SHOULD BE ENROLLED?");
+    }
 
+    public void Withdraw() throws SQLException {
+        String q = "DELETE FROM student_enrolled_courses WHERE course_id = " + GetDbCourseId() + " AND student_id LIKE " +
+                "'%"+CurrentUser.getUserId()+"%'";
 
+        System.out.println(q);
+
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+        Statement state = conn.createStatement();
+
+        state.executeUpdate(q);
+
+        conn.close();
+        state.close();
+        System.out.println("SHOULD HAVE BEEN WITHDRAWN");
     }
 
     public void SignOut(ActionEvent event) throws IOException {
