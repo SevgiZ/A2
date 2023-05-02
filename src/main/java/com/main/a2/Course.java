@@ -1,7 +1,6 @@
 package com.main.a2;
 
 public class Course {
-
     private String name;
     private String capacity;    //Capacity is a string to account for when it needs to be N/A
     private String year;
