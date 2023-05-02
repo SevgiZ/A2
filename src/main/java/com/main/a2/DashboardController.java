@@ -22,6 +22,7 @@ public class DashboardController implements Initializable {
     private String searchTerm;
     private ObservableList<Course> courses = FXCollections.observableArrayList();
     private ObservableList<Course> searchResults = FXCollections.observableArrayList();
+    private int course_id;
 
     @FXML
     private Button btnLogOut;
@@ -112,6 +113,10 @@ public class DashboardController implements Initializable {
             txtUsername.setText(user.getUsername());
             txtStudentId.setText(user.getUserId());
 
+            conn.close();
+            state.close();
+            rs.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -120,13 +125,23 @@ public class DashboardController implements Initializable {
     }
 
     public void enrollButton() throws SQLException {
-        Course c = tableCourses.getSelectionModel().getSelectedItem();
-        System.out.println(c.getName());
+        //course_id = GetDbCourseId();
+
+        System.out.println(CurrentUser.getUserId());
+
+        String q = "INSERT INTO student_enrolled_courses (student_id, course_id) " +
+                "VALUES ('" + CurrentUser.getUserId() + "', " + GetDbCourseId() + ");";
+        System.out.println(q);
 
         Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-        String query = "INSERT INTO ";
         Statement state = conn.createStatement();
-        ResultSet rs = state.executeQuery(query);
+
+        state.executeUpdate(q);
+
+        conn.close();
+        state.close();
+
+        System.out.println("SHOULD BE ENROLLED?");
 
 
     }
@@ -162,6 +177,28 @@ public class DashboardController implements Initializable {
     public void ShowAllCourses() {
         searchResults.clear();
         tableCourses.setItems(courses);
+    }
+
+    public int GetDbCourseId() throws SQLException {
+        Course c = tableCourses.getSelectionModel().getSelectedItem();
+        System.out.println(c.getName());
+
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+
+        String q =  "SELECT course_id FROM courses WHERE course_name LIKE '%" + c.getName() +  "%'";
+        Statement state = conn.createStatement();
+        ResultSet rs = state.executeQuery(q);
+
+
+        while (rs.next()) {
+            course_id = Integer.parseInt(rs.getString("course_id"));
+            System.out.println(course_id);
+        }
+
+        conn.close();
+        state.close();
+
+        return course_id;
     }
 
 }

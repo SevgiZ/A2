@@ -105,7 +105,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnLogOut" layoutX="993.0" layoutY="29.0" mnemonicParsing="false" onAction="#SignOut" text="Log Out">
+            <Button fx:id="btnLogOut" layoutX="993.0" layoutY="29.0" mnemonicParsing="false" onAction="#SignOut" text="Log Out" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="29.0">
                <font>
                   <Font size="18.0" />
                </font>

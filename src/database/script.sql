@@ -21,6 +21,6 @@ CREATE TABLE student_courses (
 student_id TEXT NOT NULL,
 course_id INTEGER NOT NULL,
 PRIMARY KEY (student_id, course_id),
-FOREIGN KEY (student_id) REFERENCES students (id),
+FOREIGN KEY (student_id) REFERENCES students (student_id),
 FOREIGN KEY (course_id) REFERENCES courses (id)
 );

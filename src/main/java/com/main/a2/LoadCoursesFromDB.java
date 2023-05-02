@@ -23,7 +23,7 @@ public class LoadCoursesFromDB {
             while (rs.next()) {
                 courseList.add(new Course(rs.getString("course_name"), rs.getString("capacity"),
                         rs.getString("year"), rs.getString("delivery_mode"), rs.getString("day_of_lecture"),
-                        rs.getString("day_of_lecture"), rs.getDouble("duration_of_lecture")));
+                        rs.getString("time_of_lecture"), rs.getDouble("duration_of_lecture")));
             }
             conn.close();
         } catch (Exception e) {

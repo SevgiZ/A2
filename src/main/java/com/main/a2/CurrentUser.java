@@ -6,7 +6,7 @@ public class CurrentUser {
     private String username;
     private String firstName;
     private String lastName;
-    private String userId;
+    private static String userId;
 
     public CurrentUser(String username, String firstName, String lastName, String userId) {
         this.username = username;
@@ -56,7 +56,7 @@ public class CurrentUser {
         this.lastName = lastName;
     }
 
-    public String getUserId() {
+    public static String getUserId() {
         return userId;
     }
 

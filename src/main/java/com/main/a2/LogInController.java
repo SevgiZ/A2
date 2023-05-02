@@ -73,8 +73,7 @@ public class LogInController {
             CurrentUser.SetUserInstance(user);
             System.out.println(user);
         }
-
-
+            conn.close();
             FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("CourseList.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(fxmlLoader.load(), 1110, 517);
@@ -110,6 +109,7 @@ public class LogInController {
                 return true;
             }
         }
+        txtLoginError.setText("Invalid username and/or password!");
         return false;
     }
 
