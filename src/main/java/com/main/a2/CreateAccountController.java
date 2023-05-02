@@ -44,6 +44,12 @@ public class CreateAccountController {
     @FXML
     private TextField fieldCreateUsername;
 
+    @FXML
+    private Label txtUsernameError;
+
+    @FXML
+    private Label txtIdError;
+
     public void LogInScene(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -65,7 +71,11 @@ public class CreateAccountController {
             lastName = fieldCreateLastName.getText();
             password = fieldCreatePassword.getText();
 
-            if (!ExistingUsername(conn, username) && !ExistingStudentId(conn, studentId)) {
+            //Cant have these in if statements because wont trigger both error messages
+            boolean userCheck = ExistingUsername(conn, username);
+            boolean idCheck = ExistingStudentId(conn, studentId);
+
+            if (!userCheck && !idCheck) {
 
                 String query = "INSERT INTO students VALUES ('" + username + "', '" + studentId + "', '" + firstName + "', '" + lastName + "', '" + password + "'" +
                         ")";
@@ -93,7 +103,7 @@ public class CreateAccountController {
         while (rs.next()) {
             System.out.println(rs.getString("username"));
             if (rs.getString("username").equals(username)) {
-                System.out.println("existing username, returning true");
+                txtUsernameError.setText("Username already taken!");
                 return true;
             }
         }
@@ -109,7 +119,7 @@ public class CreateAccountController {
         while (rs.next()) {
             System.out.println(rs.getString("student_id"));
             if (rs.getString("student_id").equals(studentId)) {
-                System.out.println("existing id, returning true");
+                txtIdError.setText("Student ID already taken or invalid!");
                 return true;
             }
         }

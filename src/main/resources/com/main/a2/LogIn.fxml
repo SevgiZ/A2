@@ -30,7 +30,7 @@
    <right>
       <AnchorPane prefHeight="487.0" prefWidth="472.0" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="138.0" layoutY="28.0" prefHeight="66.0" prefWidth="124.0" text="Sign In" textAlignment="CENTER">
+            <Label layoutX="143.0" layoutY="28.0" prefHeight="66.0" prefWidth="116.0" text="Sign In" textAlignment="CENTER">
                <font>
                   <Font name="Arial" size="37.0" />
                </font>
@@ -62,6 +62,11 @@
                </font>
             </Button>
             <PasswordField fx:id="fieldPassword" layoutX="138.0" layoutY="182.0" />
+            <Label fx:id="txtLoginError" layoutX="74.0" layoutY="291.0" prefHeight="25.0" prefWidth="254.0" textFill="RED">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </right>

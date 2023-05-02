@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -32,6 +33,13 @@ public class LogInController {
 
     @FXML
     private TextField fieldUsername;
+
+    @FXML
+    private Label txtLoginError;
+
+
+
+
 
     /*public void LogInScene(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("CourseList.fxml"));
@@ -78,6 +86,7 @@ public class LogInController {
                 return true;
             }
         }
+        txtLoginError.setText("Invalid username and/or password!");
         return false;
     }
 
