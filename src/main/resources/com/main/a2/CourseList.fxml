@@ -115,7 +115,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnEnroll1" layoutX="457.0" layoutY="48.0" mnemonicParsing="false" text="Show Enrolled Courses">
+            <Button fx:id="btnShowEnrolled" layoutX="442.0" layoutY="48.0" mnemonicParsing="false" onAction="#ShowEnrolledCourses" text="Show Enrolled Courses">
                <font>
                   <Font size="14.0" />
                </font>
@@ -125,6 +125,11 @@
                   <Font size="14.0" />
                </font>
             </Button>
+            <Label fx:id="labelMessage" layoutX="442.0" layoutY="6.0" prefHeight="32.0" prefWidth="498.0" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </bottom>

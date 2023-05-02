@@ -75,6 +75,13 @@ public class DashboardController implements Initializable {
     @FXML
     private Label txtUsername;
 
+    @FXML
+    private Label labelMessage;
+
+    public String courseNameMsg;
+    public String dayMsg;
+    public String timeMsg;
+
     public void LogInScene(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -138,9 +145,24 @@ public class DashboardController implements Initializable {
 
         state.executeUpdate(q);
 
+        q = "SELECT course_name, day_of_lecture, time_of_lecture FROM (student_enrolled_courses INNER JOIN courses " +
+                "ON student_enrolled_courses.course_id = courses.course_id) " +
+                "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
+
+        ResultSet rs = state.executeQuery(q);
+
+        while (rs.next()) {
+            courseNameMsg = rs.getString("course_name");
+            dayMsg = rs.getString("day_of_lecture");
+            timeMsg = rs.getString("time_of_lecture");
+        }
+
+
+
         conn.close();
         state.close();
 
+        labelMessage.setText("Enrolled in: " + courseNameMsg + " @ " + dayMsg + ", " + timeMsg);
         System.out.println("SHOULD BE ENROLLED?");
     }
 
@@ -158,6 +180,33 @@ public class DashboardController implements Initializable {
         conn.close();
         state.close();
         System.out.println("SHOULD HAVE BEEN WITHDRAWN");
+
+
+    }
+
+    public void ShowEnrolledCourses() throws SQLException {
+        searchResults.clear();
+        String q = "SELECT * FROM (student_enrolled_courses INNER JOIN courses " +
+                "ON student_enrolled_courses.course_id = courses.course_id) " +
+                "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
+        System.out.println(q);
+
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+        Statement state = conn.createStatement();
+        ResultSet rs = state.executeQuery(q);
+
+        while (rs.next()) {
+            searchResults.add(
+                    new Course(rs.getString("course_name"), rs.getString("capacity"), rs.getString("year"),
+                            rs.getString("delivery_mode"), rs.getString("day_of_lecture"), rs.getString("time_of_lecture"),
+                            rs.getDouble("duration_of_lecture"))
+            );
+        }
+
+        conn.close();
+        state.close();
+        tableCourses.setItems(searchResults);
+
     }
 
     public void SignOut(ActionEvent event) throws IOException {
