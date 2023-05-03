@@ -17,6 +17,9 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
+import static javafx.scene.paint.Color.RED;
+import static javafx.scene.paint.Color.WHITE;
+
 public class DashboardController implements Initializable {
     private Stage stage;
     private String searchTerm;
@@ -78,9 +81,7 @@ public class DashboardController implements Initializable {
     @FXML
     private Label labelMessage;
 
-    public String courseNameMsg;
-    public String dayMsg;
-    public String timeMsg;
+    private int resultSize;
 
     public void LogInScene(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
@@ -132,20 +133,20 @@ public class DashboardController implements Initializable {
     }
 
     public void Enroll() throws SQLException {
-        //course_id = GetDbCourseId();
+        Course c = tableCourses.getSelectionModel().getSelectedItem();
+        if (!IsEnrolled()) {
+            System.out.println(CurrentUser.getUserId());
 
-        System.out.println(CurrentUser.getUserId());
+            String q = "INSERT INTO student_enrolled_courses (student_id, course_id) " +
+                    "VALUES ('" + CurrentUser.getUserId() + "', " + GetDbCourseId() + ");";
+            System.out.println(q);
 
-        String q = "INSERT INTO student_enrolled_courses (student_id, course_id) " +
-                "VALUES ('" + CurrentUser.getUserId() + "', " + GetDbCourseId() + ");";
-        System.out.println(q);
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+            Statement state = conn.createStatement();
 
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-        Statement state = conn.createStatement();
+            state.executeUpdate(q);
 
-        state.executeUpdate(q);
-
-        q = "SELECT course_name, day_of_lecture, time_of_lecture FROM (student_enrolled_courses INNER JOIN courses " +
+        /*q = "SELECT course_name, day_of_lecture, time_of_lecture FROM (student_enrolled_courses INNER JOIN courses " +
                 "ON student_enrolled_courses.course_id = courses.course_id) " +
                 "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
 
@@ -155,31 +156,47 @@ public class DashboardController implements Initializable {
             courseNameMsg = rs.getString("course_name");
             dayMsg = rs.getString("day_of_lecture");
             timeMsg = rs.getString("time_of_lecture");
+        }*/
+
+
+            conn.close();
+            state.close();
+
+            labelMessage.setTextFill(WHITE);
+            labelMessage.setText("Enrolled in: " + c.getName() + " @ " + c.getDay() + ", " + c.getTime());
+        }
+        else {
+            labelMessage.setText("You are already enrolled in: " + c.getName() + " @ " + c.getDay() + ", " + c.getTime() + "!");
+            labelMessage.setTextFill(RED);
         }
 
-
-
-        conn.close();
-        state.close();
-
-        labelMessage.setText("Enrolled in: " + courseNameMsg + " @ " + dayMsg + ", " + timeMsg);
-        System.out.println("SHOULD BE ENROLLED?");
     }
 
     public void Withdraw() throws SQLException {
-        String q = "DELETE FROM student_enrolled_courses WHERE course_id = " + GetDbCourseId() + " AND student_id LIKE " +
-                "'%"+CurrentUser.getUserId()+"%'";
+        Course c = tableCourses.getSelectionModel().getSelectedItem();
+        if (IsEnrolled()) {
+            String q = "DELETE FROM student_enrolled_courses WHERE course_id = " + GetDbCourseId() + " AND student_id LIKE " +
+                    "'%" + CurrentUser.getUserId() + "%'";
 
-        System.out.println(q);
+            System.out.println(q);
 
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-        Statement state = conn.createStatement();
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+            Statement state = conn.createStatement();
 
-        state.executeUpdate(q);
+            state.executeUpdate(q);
 
-        conn.close();
-        state.close();
-        System.out.println("SHOULD HAVE BEEN WITHDRAWN");
+            conn.close();
+            state.close();
+            System.out.println("SHOULD HAVE BEEN WITHDRAWN");
+
+            labelMessage.setTextFill(WHITE);
+            labelMessage.setText("Withdrew from " + c.getName());
+        }
+
+        else {
+            labelMessage.setText("You are not enrolled in: " + c.getName());
+            labelMessage.setTextFill(RED);
+        }
 
 
     }
@@ -262,6 +279,32 @@ public class DashboardController implements Initializable {
         state.close();
 
         return course_id;
+    }
+
+    public boolean IsEnrolled() throws SQLException {
+
+        Course c = tableCourses.getSelectionModel().getSelectedItem();
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+        String q = "SELECT COUNT(*) AS total FROM student_enrolled_courses WHERE course_id = " + GetDbCourseId() + " AND " +
+                "student_id LIKE '%" + CurrentUser.getUserId() + "%'";
+        Statement state = conn.createStatement();
+        ResultSet rs = state.executeQuery(q);
+        //System.out.println(q);
+
+        resultSize = Integer.parseInt(rs.getString("total"));
+        System.out.println("result size:  " + resultSize);
+
+        if (resultSize > 0) {
+            System.out.println("Enrolled, returning true");
+            conn.close();
+            state.close();
+            rs.close();
+            return true;
+        }
+        conn.close();
+        state.close();
+        rs.close();
+        return false;
     }
 
 }
