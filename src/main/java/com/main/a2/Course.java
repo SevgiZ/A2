@@ -18,7 +18,7 @@ public class Course {
         this.day = day;
         this.time = time;
         this.duration = duration;
-        this.openclosed = "OPEN";
+        this.openclosed = openclosed;
         this.dates = dates;
 
         if (delivery.equals("Online")) {

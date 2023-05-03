@@ -97,6 +97,7 @@ public class DashboardController implements Initializable {
 
     public void UpdateTable() {
         try {
+            courses.clear();
             courses = LoadCoursesFromDB.Load(courses);
             Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
             String query = "SELECT * FROM courses";
@@ -147,15 +148,17 @@ public class DashboardController implements Initializable {
 
             String q = "INSERT INTO student_enrolled_courses (student_id, course_id) " +
                     "VALUES ('" + CurrentUser.getUserId() + "', " + GetDbCourseId() + ");";
-            System.out.println(q);
 
             Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
             Statement state = conn.createStatement();
 
             state.executeUpdate(q);
 
+            RemoveCourseSlot(c);
+
             conn.close();
             state.close();
+
 
             labelMessage.setTextFill(WHITE);
             labelMessage.setText("Enrolled in: " + c.getName() + " @ " + c.getDay() + ", " + c.getTime());
@@ -302,20 +305,39 @@ public class DashboardController implements Initializable {
         return false;
     }
 
-    /*public void UpdateCourseAvailability(Course c) throws SQLException {
+    //Is there a better way to do literally everything about this?
+    public void CloseCourseAvailability() throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
         Statement state = conn.createStatement();
-        String q = "SELECT * FROM courses";
-        ResultSet rs = state.executeQuery(q);
 
-        while (rs.next()) {
-            if (!rs.getString("capacity").equals("N/A")) {
-                if ((Integer.parseInt(rs.getString("capacity")) < 1)) {
-                    q = "UPDATE "
-                    state.executeQuery("SELECT ");
-                }
-            }
+        String q = "UPDATE courses SET open_closed = 'CLOSED' WHERE capacity = 0";
+        state.executeUpdate(q);
+
+        UpdateTable();
+
+        conn.close();
+        state.close();
+    }
+
+    public void RemoveCourseSlot(Course c) throws SQLException {
+        if (!c.getCapacity().equals("N/A")) {
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+            Statement state = conn.createStatement();
+            String q = "UPDATE courses SET capacity = capacity - 1 " +
+                    "WHERE course_name LIKE '%" + c.getName() + "%'";
+
+            System.out.println("UPDATE COURSE SLOTS: " + q);
+
+            state.executeUpdate(q);
+            UpdateTable();
+
+            conn.close();
+            state.close();
+
+            CloseCourseAvailability();
         }
-    }*/
+    }
+
+
 
 }
