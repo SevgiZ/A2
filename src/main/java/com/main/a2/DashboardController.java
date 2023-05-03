@@ -187,6 +187,8 @@ public class DashboardController implements Initializable {
             state.close();
             System.out.println("SHOULD HAVE BEEN WITHDRAWN");
 
+            AddCourseSlot(c);
+
             labelMessage.setTextFill(WHITE);
             labelMessage.setText("Withdrew from " + c.getName());
         }
@@ -306,15 +308,12 @@ public class DashboardController implements Initializable {
     }
 
     //Is there a better way to do literally everything about this?
-    public void CloseCourseAvailability() throws SQLException {
+    public void CourseCloseCheck() throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
         Statement state = conn.createStatement();
-
         String q = "UPDATE courses SET open_closed = 'CLOSED' WHERE capacity = 0";
         state.executeUpdate(q);
-
         UpdateTable();
-
         conn.close();
         state.close();
     }
@@ -325,8 +324,30 @@ public class DashboardController implements Initializable {
             Statement state = conn.createStatement();
             String q = "UPDATE courses SET capacity = capacity - 1 " +
                     "WHERE course_name LIKE '%" + c.getName() + "%'";
+            state.executeUpdate(q);
+            UpdateTable();
+            conn.close();
+            state.close();
+            CourseCloseCheck();
+        }
+    }
 
-            System.out.println("UPDATE COURSE SLOTS: " + q);
+    public void CourseOpenCheck() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+        Statement state = conn.createStatement();
+        String q = "UPDATE courses SET open_closed = 'OPEN' WHERE capacity > 0";
+        state.executeUpdate(q);
+        UpdateTable();
+        conn.close();
+        state.close();
+    }
+
+    public void AddCourseSlot(Course c) throws SQLException {
+        if (!c.getCapacity().equals("N/A")) {
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+            Statement state = conn.createStatement();
+            String q = "UPDATE courses SET capacity = capacity + 1 " +
+                    "WHERE course_name LIKE '%" + c.getName() + "%'";
 
             state.executeUpdate(q);
             UpdateTable();
@@ -334,10 +355,8 @@ public class DashboardController implements Initializable {
             conn.close();
             state.close();
 
-            CloseCourseAvailability();
+            CourseOpenCheck();
         }
     }
-
-
 
 }
