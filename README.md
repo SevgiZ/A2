@@ -15,8 +15,6 @@ Export course list
 
 Stay logged in between sessions
 
-Noti/feedback messages
-
 
 
 MVC view
