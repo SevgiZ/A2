@@ -11,8 +11,6 @@ Proper course capacity functionality
 
 Timetable clashes
 
-Error checking (cant enroll in same course twice, etc)
-
 Export course list
 
 Stay logged in between sessions
