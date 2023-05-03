@@ -8,16 +8,18 @@ public class Course {
     private String day;
     private  String time;
     private double duration;
-    private String slotsLeft;
+    private String openclosed;
+    private String dates;
 
-    Course(String name, String capacity, String year, String delivery, String day, String time, double duration) {
+    Course(String name, String capacity, String openclosed, String year, String delivery, String day, String time, double duration, String dates) {
         this.name = name;
         this.year = year;
         this.delivery = delivery;
         this.day = day;
         this.time = time;
         this.duration = duration;
-        this.slotsLeft = "OPEN";
+        this.openclosed = "OPEN";
+        this.dates = dates;
 
         if (delivery.equals("Online")) {
             this.capacity = "N/A";
@@ -42,9 +44,9 @@ public class Course {
         this.capacity = capacity;
     }
 
-    public String getSlotsLeft() {return slotsLeft;}
+    public String getOpenclosed() {return openclosed;}
 
-    public void setSlotsLeft(String slotsLeft) {this.slotsLeft = slotsLeft;}
+    public void setOpenclosed(String slotsLeft) {this.openclosed = slotsLeft;}
 
     public String getYear() {
         return year;
@@ -84,6 +86,14 @@ public class Course {
 
     public void setDuration(double duration) {
         this.duration = duration;
+    }
+
+    public void setDates(String dates) {
+        this.dates = dates;
+    }
+
+    public String getDates() {
+        return dates;
     }
 
     @Override

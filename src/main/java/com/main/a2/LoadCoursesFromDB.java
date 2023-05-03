@@ -21,9 +21,9 @@ public class LoadCoursesFromDB {
             ResultSet rs = state.executeQuery(query);
 
             while (rs.next()) {
-                courseList.add(new Course(rs.getString("course_name"), rs.getString("capacity"),
+                courseList.add(new Course(rs.getString("course_name"), rs.getString("capacity"), rs.getString("open_closed"),
                         rs.getString("year"), rs.getString("delivery_mode"), rs.getString("day_of_lecture"),
-                        rs.getString("time_of_lecture"), rs.getDouble("duration_of_lecture")));
+                        rs.getString("time_of_lecture"), rs.getDouble("duration_of_lecture"), rs.getString("dates")));
             }
             conn.close();
         } catch (Exception e) {

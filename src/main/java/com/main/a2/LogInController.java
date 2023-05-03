@@ -76,7 +76,7 @@ public class LogInController {
             conn.close();
             FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("CourseList.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(fxmlLoader.load(), 1110, 517);
+            Scene scene = new Scene(fxmlLoader.load(), 1220, 517);
             stage.setTitle("myTimetable - Course Enrollment!");
             stage.setScene(scene);
             stage.show();

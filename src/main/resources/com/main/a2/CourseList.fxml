@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="517.0" prefWidth="1110.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.main.a2.DashboardController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="517.0" prefWidth="1213.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.main.a2.DashboardController">
    <top>
       <AnchorPane prefHeight="124.0" prefWidth="1040.0" style="-fx-background-color: #E52A21;" BorderPane.alignment="CENTER">
          <children>
@@ -81,6 +81,7 @@
                   <TableColumn fx:id="day" prefWidth="117.0" text="Day" />
                   <TableColumn fx:id="time" prefWidth="108.0" text="Time" />
                   <TableColumn fx:id="duration" prefWidth="119.0" text="Duration (hours)" />
+                  <TableColumn fx:id="dates" prefWidth="119.0" text="Dates" />
               </columns>
             </TableView>
          </children>

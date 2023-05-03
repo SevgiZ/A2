@@ -67,6 +67,9 @@ public class DashboardController implements Initializable {
     private TableColumn<Course, String> year;
 
     @FXML
+    private TableColumn<Course, String> dates;
+
+    @FXML
     private Label txtFirstName;
 
     @FXML
@@ -92,9 +95,7 @@ public class DashboardController implements Initializable {
         stage.show();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
+    public void UpdateTable() {
         try {
             courses = LoadCoursesFromDB.Load(courses);
             Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
@@ -105,13 +106,30 @@ public class DashboardController implements Initializable {
             while (rs.next()) {
                 courseName.setCellValueFactory(new PropertyValueFactory<Course, String>("name"));
                 capacity.setCellValueFactory(new PropertyValueFactory<Course, String>("capacity"));
-                openclosed.setCellValueFactory(new PropertyValueFactory<Course, String>("slotsLeft"));
+                openclosed.setCellValueFactory(new PropertyValueFactory<Course, String>("openclosed"));
                 year.setCellValueFactory(new PropertyValueFactory<Course, String>("year"));
                 delivery.setCellValueFactory(new PropertyValueFactory<Course, String>("delivery"));
                 day.setCellValueFactory(new PropertyValueFactory<Course, String>("day"));
                 time.setCellValueFactory(new PropertyValueFactory<Course, String>("time"));
                 duration.setCellValueFactory(new PropertyValueFactory<Course, Double>("duration"));
+                dates.setCellValueFactory(new PropertyValueFactory<Course, String>("dates"));
+
+                conn.close();
+                state.close();
+                rs.close();
+
+                tableCourses.setItems(courses);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+            UpdateTable();
 
             CurrentUserHolder holder = CurrentUserHolder.getCurrentUser();
             CurrentUser user = holder.getUser();
@@ -120,16 +138,6 @@ public class DashboardController implements Initializable {
             txtLastName.setText(user.getLastName());
             txtUsername.setText(user.getUsername());
             txtStudentId.setText(user.getUserId());
-
-            conn.close();
-            state.close();
-            rs.close();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        tableCourses.setItems(courses);
     }
 
     public void Enroll() throws SQLException {
@@ -145,19 +153,6 @@ public class DashboardController implements Initializable {
             Statement state = conn.createStatement();
 
             state.executeUpdate(q);
-
-        /*q = "SELECT course_name, day_of_lecture, time_of_lecture FROM (student_enrolled_courses INNER JOIN courses " +
-                "ON student_enrolled_courses.course_id = courses.course_id) " +
-                "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
-
-        ResultSet rs = state.executeQuery(q);
-
-        while (rs.next()) {
-            courseNameMsg = rs.getString("course_name");
-            dayMsg = rs.getString("day_of_lecture");
-            timeMsg = rs.getString("time_of_lecture");
-        }*/
-
 
             conn.close();
             state.close();
@@ -214,9 +209,9 @@ public class DashboardController implements Initializable {
 
         while (rs.next()) {
             searchResults.add(
-                    new Course(rs.getString("course_name"), rs.getString("capacity"), rs.getString("year"),
+                    new Course(rs.getString("course_name"), rs.getString("capacity"), rs.getString("open_closed"), rs.getString("year"),
                             rs.getString("delivery_mode"), rs.getString("day_of_lecture"), rs.getString("time_of_lecture"),
-                            rs.getDouble("duration_of_lecture"))
+                            rs.getDouble("duration_of_lecture"), rs.getString("dates"))
             );
         }
 
@@ -306,5 +301,21 @@ public class DashboardController implements Initializable {
         rs.close();
         return false;
     }
+
+    /*public void UpdateCourseAvailability(Course c) throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+        Statement state = conn.createStatement();
+        String q = "SELECT * FROM courses";
+        ResultSet rs = state.executeQuery(q);
+
+        while (rs.next()) {
+            if (!rs.getString("capacity").equals("N/A")) {
+                if ((Integer.parseInt(rs.getString("capacity")) < 1)) {
+                    q = "UPDATE "
+                    state.executeQuery("SELECT ");
+                }
+            }
+        }
+    }*/
 
 }
