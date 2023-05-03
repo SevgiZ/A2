@@ -143,7 +143,7 @@ public class DashboardController implements Initializable {
 
     public void Enroll() throws SQLException {
         Course c = tableCourses.getSelectionModel().getSelectedItem();
-        if (!IsEnrolled()) {
+        if (!IsEnrolled() && CheckCourseAvailability(c)) {
             System.out.println(CurrentUser.getUserId());
 
             String q = "INSERT INTO student_enrolled_courses (student_id, course_id) " +
@@ -163,8 +163,13 @@ public class DashboardController implements Initializable {
             labelMessage.setTextFill(WHITE);
             labelMessage.setText("Enrolled in: " + c.getName() + " @ " + c.getDay() + ", " + c.getTime());
         }
-        else {
+        else if (IsEnrolled()) {
             labelMessage.setText("You are already enrolled in: " + c.getName() + " @ " + c.getDay() + ", " + c.getTime() + "!");
+            labelMessage.setTextFill(RED);
+        }
+
+        if (!CheckCourseAvailability(c)) {
+            labelMessage.setText("Course is currently full!");
             labelMessage.setTextFill(RED);
         }
 
@@ -357,6 +362,34 @@ public class DashboardController implements Initializable {
 
             CourseOpenCheck();
         }
+    }
+
+    public boolean CheckCourseAvailability(Course c) throws SQLException {
+        if (!c.getCapacity().equals("N/A")) {
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+            Statement state = conn.createStatement();
+
+            String q = "SELECT * FROM courses WHERE course_name LIKE '%" + c.getName() + "%'";
+            ResultSet rs = state.executeQuery(q);
+
+            if (rs.getString("open_closed").equals("CLOSED")) {
+                System.out.println("COURSE IS CLOSED");
+                conn.close();
+                state.close();
+                rs.close();
+                return false;
+            }
+
+            else {
+                conn.close();
+                state.close();
+                rs.close();
+                System.out.println("COURSE IS OPEN");
+                return true;
+            }
+        }
+        System.out.println("COURSE IS OPEN");
+        return true;
     }
 
 }

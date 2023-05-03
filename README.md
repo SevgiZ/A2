@@ -7,8 +7,6 @@ TODO:
 
 Change first name, last name, password
 
-Proper course capacity functionality
-
 Timetable clashes
 
 Export course list
