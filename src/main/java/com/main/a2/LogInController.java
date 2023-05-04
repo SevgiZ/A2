@@ -39,7 +39,7 @@ public class LogInController {
 
 
     /*public void LogInScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("CourseList.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("Dashboard.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 1110, 517);
         stage.setTitle("myTimetable - Course Enrollment!");
@@ -74,7 +74,7 @@ public class LogInController {
             System.out.println(user);
         }
             conn.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("CourseList.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("Dashboard.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(fxmlLoader.load(), 1220, 517);
             stage.setTitle("myTimetable - Course Enrollment!");

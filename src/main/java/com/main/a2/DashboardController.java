@@ -12,6 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -28,13 +30,7 @@ public class DashboardController implements Initializable {
     private int course_id;
 
     @FXML
-    private Button btnLogOut;
-
-    @FXML
-    private Button btnSearch;
-
-    @FXML
-    private Button btnShowAll;
+    private Button btnExport;
 
     @FXML
     private TableColumn<Course, String> capacity;
@@ -83,6 +79,8 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label labelMessage;
+
+
 
     private int resultSize;
 
@@ -206,7 +204,7 @@ public class DashboardController implements Initializable {
 
     }
 
-    public void ShowEnrolledCourses() throws SQLException {
+    public ObservableList<Course> ShowEnrolledCourses() throws SQLException {
         searchResults.clear();
         String q = "SELECT * FROM (student_enrolled_courses INNER JOIN courses " +
                 "ON student_enrolled_courses.course_id = courses.course_id) " +
@@ -229,14 +227,11 @@ public class DashboardController implements Initializable {
         state.close();
         tableCourses.setItems(searchResults);
 
+        return searchResults;
+
     }
 
     public void SignOut(ActionEvent event) throws IOException {
-        //Erase current user details
-        //CurrentUser u = new CurrentUser();
-        //CurrentUserHolder holder = CurrentUserHolder.getCurrentUser();
-        //holder.setCurrentUser(u);
-
         CurrentUser.ResetUser();
 
         FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
@@ -312,7 +307,6 @@ public class DashboardController implements Initializable {
         return false;
     }
 
-    //Is there a better way to do literally everything about this?
     public void CourseCloseCheck() throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
         Statement state = conn.createStatement();
@@ -390,6 +384,35 @@ public class DashboardController implements Initializable {
         }
         System.out.println("COURSE IS OPEN");
         return true;
+    }
+
+    public void Export() throws SQLException, IOException {
+        System.out.println("Exporting");
+
+        String q = "SELECT * FROM (student_enrolled_courses INNER JOIN courses " +
+                "ON student_enrolled_courses.course_id = courses.course_id) " +
+                "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
+        System.out.println(q);
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+        Statement state = conn.createStatement();
+        ResultSet rs = state.executeQuery(q);
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter("src\\database\\enrollment.txt"));
+        bw.write(txtFirstName.getText() + " " + txtLastName.getText() + ", " + txtStudentId.getText() + "\n\n");
+
+        while (rs.next()) {
+            bw.write("Course: " + rs.getString("course_name") + "\n" +
+                    "Year: " + rs.getString("year") + "\n" +
+                    "Delivery: " + rs.getString("delivery_mode") + "\n" +
+                    "Day: " + rs.getString("day_of_lecture") + "\n" +
+                    "Time: " + rs.getString("time_of_lecture") + "\n" +
+                    "Duration (hours)" + rs.getDouble("duration_of_lecture") + "\n" +
+                    "Dates: " + rs.getString("dates") + "\n\n");
+        }
+        bw.close();
+        conn.close();
+        labelMessage.setTextFill(WHITE);
+        labelMessage.setText("Enrolled courses exported as .txt!");
     }
 
 }

@@ -9,8 +9,6 @@ Change first name, last name, password
 
 Timetable clashes
 
-Export course list
-
 Stay logged in between sessions
 
 
