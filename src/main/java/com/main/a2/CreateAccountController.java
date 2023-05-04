@@ -6,8 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -51,7 +49,7 @@ public class CreateAccountController {
     private Label txtIdError;
 
     public void LogInScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("LogIn.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Sign In");

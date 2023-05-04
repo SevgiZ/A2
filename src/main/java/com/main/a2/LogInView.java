@@ -9,12 +9,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class LogIn extends Application {
+public class LogInView extends Application {
     @Override
     public void start(Stage stage) throws IOException, SQLException {
-        DatabaseConnect.Connect();
-
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("LogIn.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Sign In");
         Image image = new Image("https://i.imgur.com/1vB2hyF.png");

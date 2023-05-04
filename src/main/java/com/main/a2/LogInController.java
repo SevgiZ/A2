@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,18 +36,8 @@ public class LogInController {
     @FXML
     private Label txtLoginError;
 
-
-    /*public void LogInScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("Dashboard.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 1110, 517);
-        stage.setTitle("myTimetable - Course Enrollment!");
-        stage.setScene(scene);
-        stage.show();
-    }*/
-
     public void CreateAccountScene(ActionEvent event) throws  IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("CreateAccount.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("CreateAccount.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Create Account");
@@ -74,7 +63,7 @@ public class LogInController {
             System.out.println(user);
         }
             conn.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("Dashboard.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("Dashboard.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(fxmlLoader.load(), 1220, 517);
             stage.setTitle("myTimetable - Course Enrollment!");

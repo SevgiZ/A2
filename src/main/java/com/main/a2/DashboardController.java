@@ -85,7 +85,7 @@ public class DashboardController implements Initializable {
     private int resultSize;
 
     public void LogInScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("LogIn.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Sign In");
@@ -141,7 +141,7 @@ public class DashboardController implements Initializable {
 
     public void Enroll() throws SQLException {
         Course c = tableCourses.getSelectionModel().getSelectedItem();
-        if (!IsEnrolled() && CheckCourseAvailability(c)) {
+        if (!IsEnrolled() && CheckCourseAvailability(c) && !IsClash(c)) {
             System.out.println(CurrentUser.getUserId());
 
             String q = "INSERT INTO student_enrolled_courses (student_id, course_id) " +
@@ -157,7 +157,6 @@ public class DashboardController implements Initializable {
             conn.close();
             state.close();
 
-
             labelMessage.setTextFill(WHITE);
             labelMessage.setText("Enrolled in: " + c.getName() + " @ " + c.getDay() + ", " + c.getTime());
         }
@@ -166,8 +165,18 @@ public class DashboardController implements Initializable {
             labelMessage.setTextFill(RED);
         }
 
-        if (!CheckCourseAvailability(c)) {
+        else if (!CheckCourseAvailability(c)) {
             labelMessage.setText("Course is currently full!");
+            labelMessage.setTextFill(RED);
+        }
+
+        else if (IsClash(c)) {
+            labelMessage.setText("Timetable clash!");
+            labelMessage.setTextFill(RED);
+        }
+
+        else {
+            labelMessage.setText("Something went wrong!");
             labelMessage.setTextFill(RED);
         }
 
@@ -206,6 +215,7 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Course> ShowEnrolledCourses() throws SQLException {
         searchResults.clear();
+        //Gets all the details of the courses that the specific student is enrolled in.
         String q = "SELECT * FROM (student_enrolled_courses INNER JOIN courses " +
                 "ON student_enrolled_courses.course_id = courses.course_id) " +
                 "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
@@ -234,7 +244,7 @@ public class DashboardController implements Initializable {
     public void SignOut(ActionEvent event) throws IOException {
         CurrentUser.ResetUser();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("LogIn.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Sign In");
@@ -406,13 +416,70 @@ public class DashboardController implements Initializable {
                     "Delivery: " + rs.getString("delivery_mode") + "\n" +
                     "Day: " + rs.getString("day_of_lecture") + "\n" +
                     "Time: " + rs.getString("time_of_lecture") + "\n" +
-                    "Duration (hours)" + rs.getDouble("duration_of_lecture") + "\n" +
+                    "Duration (hours): " + rs.getDouble("duration_of_lecture") + "\n" +
                     "Dates: " + rs.getString("dates") + "\n\n");
         }
         bw.close();
         conn.close();
         labelMessage.setTextFill(WHITE);
         labelMessage.setText("Enrolled courses exported as .txt!");
+    }
+
+    public boolean IsClash(Course c) throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+        Statement state = conn.createStatement();
+        String q = "SELECT * FROM (student_enrolled_courses INNER JOIN courses " +
+                "ON student_enrolled_courses.course_id = courses.course_id) " +
+                "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
+
+        ResultSet rs = state.executeQuery(q);
+
+
+        double enrollingTime = DecimalToTime(StringTimeToDouble(c.getTime()));
+        double enrollingFinishTime = DecimalToTime(enrollingTime + c.getDuration());
+        System.out.println("Enrolling time: " + enrollingTime + "\nEnrolling finish time: " + enrollingFinishTime);
+
+        while (rs.next()) {
+            double clashStartTime = DecimalToTime(StringTimeToDouble(rs.getString("time_of_lecture")));
+            System.out.println("Clash check time: " + clashStartTime);
+
+            if (clashStartTime > enrollingTime && clashStartTime < enrollingFinishTime) {
+                System.out.println("SHOULD BE A CLASH!!!");
+                conn.close();
+                state.close();
+                rs.close();
+                return true;
+
+            }
+
+        }
+        System.out.println("SHOULD BE GOOD TO GO");
+        conn.close();
+        state.close();
+        rs.close();
+        return false;
+
+    }
+
+    public Double StringTimeToDouble(String inputTime) {
+        //Use doubles becuase we are working with 'duration' which needs to be a double
+
+        String[] timeSplit = inputTime.split(":");
+        double dHour = Double.parseDouble(timeSplit[0]);
+        double dMinute = Double.parseDouble(timeSplit[1]) / 100;
+
+        Double realTime = dHour + dMinute;
+
+        return realTime;
+    }
+
+    public double DecimalToTime(double inputTime) {
+        double leftOver = inputTime % 1;
+        double hour = inputTime - leftOver;
+        double realLeftOver = (leftOver * (60/1) / 100);
+        double realTime = hour + realLeftOver;
+        //System.out.println("ACTUAL REAL REAL TIME: " + realTime);
+        return realTime;
     }
 
 }
