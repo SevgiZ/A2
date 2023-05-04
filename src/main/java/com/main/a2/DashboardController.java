@@ -275,7 +275,7 @@ public class DashboardController implements Initializable {
 
         Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
 
-        String q =  "SELECT course_id FROM courses WHERE course_name LIKE '%" + c.getName() +  "%'";
+        String q =  "SELECT course_id FROM courses WHERE course_name = '" + c.getName() +  "'";
         Statement state = conn.createStatement();
         ResultSet rs = state.executeQuery(q);
 
@@ -299,7 +299,7 @@ public class DashboardController implements Initializable {
                 "student_id LIKE '%" + CurrentUser.getUserId() + "%'";
         Statement state = conn.createStatement();
         ResultSet rs = state.executeQuery(q);
-        //System.out.println(q);
+        System.out.println(q);
 
         resultSize = Integer.parseInt(rs.getString("total"));
         System.out.println("result size:  " + resultSize);
@@ -435,25 +435,40 @@ public class DashboardController implements Initializable {
         ResultSet rs = state.executeQuery(q);
 
 
-        double enrollingTime = DecimalToTime(StringTimeToDouble(c.getTime()));
-        double enrollingFinishTime = DecimalToTime(enrollingTime + c.getDuration());
-        System.out.println("Enrolling time: " + enrollingTime + "\nEnrolling finish time: " + enrollingFinishTime);
+        double enrollingStartTime = StringTimeToDouble(c.getTime());
+        double enrollingFinishTime = enrollingStartTime+ DurationToRealTime(c.getDuration());
+        System.out.println("enrollingStartTime " + enrollingStartTime + "\nEnrolling finish time: " + enrollingFinishTime);
 
         while (rs.next()) {
-            double clashStartTime = DecimalToTime(StringTimeToDouble(rs.getString("time_of_lecture")));
-            //clashFinishTime = clash start time (in actual hours) + its duration
-            double clashFinishTime = DecimalToTime(StringTimeToDouble(rs.getString("time_of_lecture"))) +
-                    DecimalToTime(rs.getDouble("duration_of_lecture"));
-            System.out.println("Clash check time: " + clashStartTime);
+            //if (rs.getString("day_of_lecture").equals(c.getDay())) {
+                double clashStartTime = DurationToRealTime(StringTimeToDouble(rs.getString("time_of_lecture")));
+            System.out.println("Clash start time: " + clashStartTime);
+                //clashFinishTime = clash start time (in actual hours) + its duration
 
-            if (enrollingTime > clashStartTime && enrollingTime < clashFinishTime) {
-                System.out.println("SHOULD BE A CLASH!!!");
-                conn.close();
-                state.close();
-                rs.close();
-                return true;
+                double clashFinishTime = StringTimeToDouble(rs.getString("time_of_lecture")) +
+                        DurationToRealTime(rs.getDouble("duration_of_lecture"));
+                System.out.println("Clash finish time: " + clashFinishTime);
 
-            }
+                if (enrollingStartTime > clashStartTime && enrollingStartTime < clashFinishTime) {
+                    System.out.println("SHOULD BE A CLASH!!!");
+                    conn.close();
+                    state.close();
+                    rs.close();
+                    return true;
+                }
+
+
+                //If you are trying to enroll in a course where a clashing time is earlier than the enrolling course time
+                if (enrollingStartTime < clashStartTime) {
+                    if (clashStartTime > enrollingStartTime && clashStartTime < enrollingFinishTime) {
+                        System.out.println("SHOULD BE A CLASH 222!!!");
+                        conn.close();
+                        state.close();
+                        rs.close();
+                        return true;
+                    }
+                }
+           // }
 
         }
         System.out.println("SHOULD BE GOOD TO GO");
@@ -476,12 +491,12 @@ public class DashboardController implements Initializable {
         return realTime;
     }
 
-    public double DecimalToTime(double inputTime) {
+    //To convert duration only. Start time is already in real time.
+    public double DurationToRealTime(double inputTime) {
         double leftOver = inputTime % 1;
         double hour = inputTime - leftOver;
         double realLeftOver = (leftOver * (60/1) / 100);
         double realTime = hour + realLeftOver;
-        //System.out.println("ACTUAL REAL REAL TIME: " + realTime);
         return realTime;
     }
 
