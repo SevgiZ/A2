@@ -16,16 +16,9 @@ import java.sql.*;
 
 public class LogInController {
     private Stage stage;
-    private Connection conn;
     private Statement state;
     private String username;
     private String password;
-
-    @FXML
-    private Button btnCreateAccount;
-
-    @FXML
-    private Button btnSignIn;
 
     @FXML
     private PasswordField fieldPassword;

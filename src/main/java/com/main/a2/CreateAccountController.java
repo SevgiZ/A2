@@ -22,12 +22,6 @@ public class CreateAccountController {
     private String studentId;
 
     @FXML
-    private Button btnCreateAccount;
-
-    @FXML
-    private Button btnGoBack;
-
-    @FXML
     private TextField fieldCreateFirstName;
 
     @FXML

@@ -23,12 +23,6 @@ public class AccountDetailsController implements Initializable {
     private Stage stage;
 
     @FXML
-    private Button btnCreateAccount;
-
-    @FXML
-    private Button btnGoBack;
-
-    @FXML
     private Label labelNotif;
 
     @FXML
@@ -52,7 +46,7 @@ public class AccountDetailsController implements Initializable {
     }
 
     @FXML
-    void ChangeAccountDetails(ActionEvent event) throws SQLException {
+    void ChangeAccountDetails() throws SQLException {
         CurrentUserHolder uh = CurrentUserHolder.getCurrentUser();
         CurrentUser u = uh.getUser();
 

@@ -30,9 +30,6 @@ public class DashboardController implements Initializable {
     private int course_id;
 
     @FXML
-    private Button btnExport;
-
-    @FXML
     private TableColumn<Course, String> capacity;
 
     @FXML
@@ -80,18 +77,8 @@ public class DashboardController implements Initializable {
     @FXML
     private Label labelMessage;
 
-
-
     private int resultSize;
 
-    public void LogInScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("LogIn.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 670, 487);
-        stage.setTitle("myTimetable - Sign In");
-        stage.setScene(scene);
-        stage.show();
-    }
 
     public void setDashboardDetails() {
         CurrentUserHolder holder = CurrentUserHolder.getCurrentUser();
