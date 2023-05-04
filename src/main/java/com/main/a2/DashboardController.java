@@ -441,9 +441,12 @@ public class DashboardController implements Initializable {
 
         while (rs.next()) {
             double clashStartTime = DecimalToTime(StringTimeToDouble(rs.getString("time_of_lecture")));
+            //clashFinishTime = clash start time (in actual hours) + its duration
+            double clashFinishTime = DecimalToTime(StringTimeToDouble(rs.getString("time_of_lecture"))) +
+                    DecimalToTime(rs.getDouble("duration_of_lecture"));
             System.out.println("Clash check time: " + clashStartTime);
 
-            if (clashStartTime > enrollingTime && clashStartTime < enrollingFinishTime) {
+            if (enrollingTime > clashStartTime && enrollingTime < clashFinishTime) {
                 System.out.println("SHOULD BE A CLASH!!!");
                 conn.close();
                 state.close();
