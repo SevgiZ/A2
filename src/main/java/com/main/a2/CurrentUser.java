@@ -7,12 +7,14 @@ public class CurrentUser {
     private String firstName;
     private String lastName;
     private static String userId;
+    private String password;
 
-    public CurrentUser(String username, String firstName, String lastName, String userId) {
+    public CurrentUser(String username, String firstName, String lastName, String userId, String password) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userId = userId;
+        this.password = password;
     }
 
     public CurrentUser() {
@@ -62,5 +64,13 @@ public class CurrentUser {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

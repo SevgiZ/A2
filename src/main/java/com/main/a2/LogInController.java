@@ -57,7 +57,7 @@ public class LogInController {
 
             while (rs.next()) {
                 CurrentUser user = new CurrentUser(rs.getString("username"), rs.getString("first_name"),
-                     rs.getString("last_name"), rs.getString("student_id"));
+                     rs.getString("last_name"), rs.getString("student_id"), rs.getString("password"));
 
             CurrentUser.SetUserInstance(user);
             System.out.println(user);

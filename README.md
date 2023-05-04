@@ -5,9 +5,6 @@ For assignment 2 of Further Programming 2023 sem 1
 
 TODO:
 
-
-Change first name, last name, password
-
 Stay logged in between sessions
 
 MVC View / Major refactor

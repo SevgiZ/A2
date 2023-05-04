@@ -93,6 +93,16 @@ public class DashboardController implements Initializable {
         stage.show();
     }
 
+    public void setDashboardDetails() {
+        CurrentUserHolder holder = CurrentUserHolder.getCurrentUser();
+        CurrentUser user = holder.getUser();
+
+        txtFirstName.setText(user.getFirstName());
+        txtLastName.setText(user.getLastName());
+        txtUsername.setText(user.getUsername());
+        txtStudentId.setText(user.getUserId());
+    }
+
     public void UpdateTable() {
         try {
             courses.clear();
@@ -129,14 +139,7 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
             UpdateTable();
-
-            CurrentUserHolder holder = CurrentUserHolder.getCurrentUser();
-            CurrentUser user = holder.getUser();
-
-            txtFirstName.setText(user.getFirstName());
-            txtLastName.setText(user.getLastName());
-            txtUsername.setText(user.getUsername());
-            txtStudentId.setText(user.getUserId());
+            setDashboardDetails();
     }
 
     public void Enroll() throws SQLException {
@@ -434,13 +437,11 @@ public class DashboardController implements Initializable {
 
         ResultSet rs = state.executeQuery(q);
 
-
         double enrollingStartTime = StringTimeToDouble(c.getTime());
         double enrollingFinishTime = enrollingStartTime+ DurationToRealTime(c.getDuration());
         System.out.println("enrollingStartTime " + enrollingStartTime + "\nEnrolling finish time: " + enrollingFinishTime);
 
         while (rs.next()) {
-
             if (rs.getString("day_of_lecture").equals(c.getDay())) {
                 double clashStartTime = DurationToRealTime(StringTimeToDouble(rs.getString("time_of_lecture")));
                 System.out.println("Clash start time: " + clashStartTime);
@@ -457,8 +458,6 @@ public class DashboardController implements Initializable {
                     rs.close();
                     return true;
                 }
-
-
                 //If you are trying to enroll in a course where a clashing time is earlier than the enrolling course time
                 if (enrollingStartTime < clashStartTime) {
                     if (clashStartTime > enrollingStartTime && clashStartTime < enrollingFinishTime) {
@@ -470,7 +469,6 @@ public class DashboardController implements Initializable {
                     }
                 }
             }
-
         }
         System.out.println("SHOULD BE GOOD TO GO");
         conn.close();
@@ -499,6 +497,15 @@ public class DashboardController implements Initializable {
         double realLeftOver = (leftOver * (60/1) / 100);
         double realTime = hour + realLeftOver;
         return realTime;
+    }
+
+    public void ChangeAccountDetailsScene(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("AccountDetailsView.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader.load(), 670, 487);
+        stage.setTitle("myTimetable - Course Enrollment!");
+        stage.setScene(scene);
+        stage.show();
     }
 
 }
