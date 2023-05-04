@@ -440,9 +440,10 @@ public class DashboardController implements Initializable {
         System.out.println("enrollingStartTime " + enrollingStartTime + "\nEnrolling finish time: " + enrollingFinishTime);
 
         while (rs.next()) {
-            //if (rs.getString("day_of_lecture").equals(c.getDay())) {
+
+            if (rs.getString("day_of_lecture").equals(c.getDay())) {
                 double clashStartTime = DurationToRealTime(StringTimeToDouble(rs.getString("time_of_lecture")));
-            System.out.println("Clash start time: " + clashStartTime);
+                System.out.println("Clash start time: " + clashStartTime);
                 //clashFinishTime = clash start time (in actual hours) + its duration
 
                 double clashFinishTime = StringTimeToDouble(rs.getString("time_of_lecture")) +
@@ -468,7 +469,7 @@ public class DashboardController implements Initializable {
                         return true;
                     }
                 }
-           // }
+            }
 
         }
         System.out.println("SHOULD BE GOOD TO GO");
