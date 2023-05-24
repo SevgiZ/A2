@@ -7,7 +7,7 @@ TODO:
 
 Stay logged in between sessions
 
-MVC View / Major refactor
+MVC View
 
 Proper timetable view (like allocate+)
 
