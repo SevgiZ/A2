@@ -100,7 +100,7 @@ public class DashboardController implements Initializable {
         try {
             courses.clear();
             courses = LoadCoursesFromDB.Load(courses);
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+            Connection conn = DatabaseConnection.getConnection();
             String query = "SELECT * FROM courses";
             Statement state = conn.createStatement();
             ResultSet rs = state.executeQuery(query);
@@ -197,7 +197,7 @@ public class DashboardController implements Initializable {
     public void SignOut(ActionEvent event) throws IOException {
         CurrentUser.ResetUser();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("LogIn.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Sign In");
@@ -231,7 +231,7 @@ public class DashboardController implements Initializable {
     }
 
     public void ChangeAccountDetailsScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("AccountDetailsView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AccountDetailsView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Course Enrollment!");

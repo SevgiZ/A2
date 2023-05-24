@@ -15,6 +15,9 @@ public class LogInUserDetails {
         CurrentUser user = new CurrentUser(rs.getString("username"), rs.getString("first_name"),
                 rs.getString("last_name"), rs.getString("student_id"), rs.getString("password"));
 
+        conn.close();
+        state.close();
+        rs.close();
         return user;
     }
 
@@ -27,11 +30,13 @@ public class LogInUserDetails {
         while (rs.next()) {
             if (rs.getString("username").equals(username)) {
                 System.out.println("valid username, returning true");
+                rs.close();
                 conn.close();
                 state.close();
                 return true;
             }
         }
+        rs.close();
         conn.close();
         state.close();
         return false;

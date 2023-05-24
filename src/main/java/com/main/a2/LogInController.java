@@ -31,7 +31,7 @@ public class LogInController {
     LogInUserDetails logUserDetails = new LogInUserDetails();
 
     public void CreateAccountScene(ActionEvent event) throws  IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("CreateAccount.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("CreateAccount.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Create Account");
@@ -40,7 +40,6 @@ public class LogInController {
     }
 
     public void LogIn(ActionEvent event) throws SQLException, IOException {
-        System.out.println("Logging in, opening DB");
         username = fieldUsername.getText();
         password = fieldPassword.getText();
 
@@ -51,7 +50,7 @@ public class LogInController {
             CurrentUser.SetUserInstance(user);
             System.out.println(user);
 
-            FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("Dashboard.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Dashboard.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(fxmlLoader.load(), 1220, 517);
             stage.setTitle("myTimetable - Course Enrollment!");

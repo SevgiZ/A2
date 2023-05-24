@@ -33,6 +33,8 @@ public class AccountDetailsController implements Initializable {
     @FXML
     private PasswordField fieldChangePassword;
 
+    ChangeDetails changeDetails = new ChangeDetails();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         CurrentUserHolder uh = CurrentUserHolder.getCurrentUser();
@@ -46,6 +48,8 @@ public class AccountDetailsController implements Initializable {
 
     @FXML
     void ChangeAccountDetails() throws SQLException {
+        changeDetails.change(fieldChangeFirstName.getText(), fieldChangeLastName.getText(), fieldChangePassword.getText());
+        /*
         CurrentUserHolder uh = CurrentUserHolder.getCurrentUser();
         CurrentUser u = uh.getUser();
 
@@ -71,13 +75,13 @@ public class AccountDetailsController implements Initializable {
 
         conn.close();
         state.close();
-        rs.close();
+        rs.close();*/
 
         labelNotif.setText("Details changed!");
     }
 
     public void LogInScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("Dashboard.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Dashboard.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 1220, 517);
         stage.setTitle("myTimetable - Sign In");
