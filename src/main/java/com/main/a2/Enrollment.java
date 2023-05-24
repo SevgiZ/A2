@@ -13,7 +13,6 @@ public class Enrollment {
                 "VALUES ('" + CurrentUser.getUserId() + "', " + courseId + ");";
 
 
-
         Connection conn = DatabaseConnection.getConnection();
         Statement state = conn.createStatement();
 
