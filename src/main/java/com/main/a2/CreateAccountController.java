@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -43,7 +42,7 @@ public class CreateAccountController {
     private Label txtIdError;
 
     public void LogInScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("LogIn.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Sign In");
@@ -54,7 +53,7 @@ public class CreateAccountController {
     public void CreateAccount() throws SQLException {
         System.out.println("Connecting to DB CREATE ACCOUNT");
         try {
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+            Connection conn = DatabaseConnection.getConnection();
             if (conn != null) {
                 System.out.println("DB CREATE ACCOUNT: Connected to database");
             }

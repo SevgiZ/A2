@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -30,7 +29,7 @@ public class LogInController {
     private Label txtLoginError;
 
     public void CreateAccountScene(ActionEvent event) throws  IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("CreateAccount.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("CreateAccount.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Create Account");
@@ -40,7 +39,7 @@ public class LogInController {
 
     public void LogIn(ActionEvent event) throws SQLException, IOException {
         System.out.println("Logging in, opening DB");
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+        Connection conn = DatabaseConnection.getConnection();
         username = fieldUsername.getText();
         password = fieldPassword.getText();
 
@@ -56,7 +55,7 @@ public class LogInController {
             System.out.println(user);
         }
             conn.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("Dashboard.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("Dashboard.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(fxmlLoader.load(), 1220, 517);
             stage.setTitle("myTimetable - Course Enrollment!");

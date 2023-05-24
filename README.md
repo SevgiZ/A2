@@ -9,6 +9,10 @@ Stay logged in between sessions
 
 MVC View / Major refactor
 
+Proper timetable view (like allocate+)
+
+Search should be case insensitive
+
 
 ***
 Encrypted passwords*

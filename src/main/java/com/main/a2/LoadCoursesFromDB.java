@@ -15,7 +15,7 @@ public class LoadCoursesFromDB {
 
     public static ObservableList<Course> Load(ObservableList<Course> courseList) throws SQLException {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
+            Connection conn = DatabaseConnection.getConnection();
             String query = "SELECT * FROM courses";
             Statement state = conn.createStatement();
             ResultSet rs = state.executeQuery(query);

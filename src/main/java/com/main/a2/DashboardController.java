@@ -12,8 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -78,6 +76,13 @@ public class DashboardController implements Initializable {
     private Label labelMessage;
 
     private int resultSize;
+    DashboardTable dashTable = new DashboardTable();
+    Enrollment dashEnroll = new Enrollment();
+    TimetableChecks timetableCheck = new TimetableChecks();
+    CourseSlots courseSlots = new CourseSlots();
+    Withdraw withdraw = new Withdraw();
+    AllCourses allCourses = new AllCourses();
+    CourseExport courseExport = new CourseExport();
 
 
     public void setDashboardDetails() {
@@ -90,7 +95,8 @@ public class DashboardController implements Initializable {
         txtStudentId.setText(user.getUserId());
     }
 
-    public void UpdateTable() {
+    //Is there a way to get this shit working from another class/object??
+    public void updateTable() {
         try {
             courses.clear();
             courses = LoadCoursesFromDB.Load(courses);
@@ -119,48 +125,38 @@ public class DashboardController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
-
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-            UpdateTable();
-            setDashboardDetails();
+        updateTable();
+        setDashboardDetails();
     }
 
     public void Enroll() throws SQLException {
         Course c = tableCourses.getSelectionModel().getSelectedItem();
-        if (!IsEnrolled() && CheckCourseAvailability(c) && !IsClash(c)) {
+        if (!timetableCheck.IsEnrolled(c) && timetableCheck.CheckCourseAvailability(c) && !timetableCheck.IsClash(c)) {
+
             System.out.println(CurrentUser.getUserId());
 
-            String q = "INSERT INTO student_enrolled_courses (student_id, course_id) " +
-                    "VALUES ('" + CurrentUser.getUserId() + "', " + GetDbCourseId() + ");";
+            dashEnroll.enroll(timetableCheck.GetDbCourseId(c), c);
 
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-            Statement state = conn.createStatement();
-
-            state.executeUpdate(q);
-
-            RemoveCourseSlot(c);
-
-            conn.close();
-            state.close();
+            //dashTable.updateTable();
 
             labelMessage.setTextFill(WHITE);
             labelMessage.setText("Enrolled in: " + c.getName() + " @ " + c.getDay() + ", " + c.getTime());
         }
-        else if (IsEnrolled()) {
+        else if (timetableCheck.IsEnrolled(c)) {
             labelMessage.setText("You are already enrolled in: " + c.getName() + " @ " + c.getDay() + ", " + c.getTime() + "!");
             labelMessage.setTextFill(RED);
         }
 
-        else if (!CheckCourseAvailability(c)) {
+        else if (!timetableCheck.CheckCourseAvailability(c)) {
             labelMessage.setText("Course is currently full!");
             labelMessage.setTextFill(RED);
         }
 
-        else if (IsClash(c)) {
+        else if (timetableCheck.IsClash(c)) {
             labelMessage.setText("Timetable clash!");
             labelMessage.setTextFill(RED);
         }
@@ -172,25 +168,12 @@ public class DashboardController implements Initializable {
 
     }
 
+    //WITHDRAWING WORKS FINE
     public void Withdraw() throws SQLException {
         Course c = tableCourses.getSelectionModel().getSelectedItem();
-        if (IsEnrolled()) {
-            String q = "DELETE FROM student_enrolled_courses WHERE course_id = " + GetDbCourseId() + " AND student_id LIKE " +
-                    "'%" + CurrentUser.getUserId() + "%'";
-
-            System.out.println(q);
-
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-            Statement state = conn.createStatement();
-
-            state.executeUpdate(q);
-
-            conn.close();
-            state.close();
-            System.out.println("SHOULD HAVE BEEN WITHDRAWN");
-
-            AddCourseSlot(c);
-
+        if (timetableCheck.IsEnrolled(c)) {
+            withdraw.withdraw(c);
+            courseSlots.AddCourseSlot(c);
             labelMessage.setTextFill(WHITE);
             labelMessage.setText("Withdrew from " + c.getName());
         }
@@ -205,28 +188,8 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Course> ShowEnrolledCourses() throws SQLException {
         searchResults.clear();
-        //Gets all the details of the courses that the specific student is enrolled in.
-        String q = "SELECT * FROM (student_enrolled_courses INNER JOIN courses " +
-                "ON student_enrolled_courses.course_id = courses.course_id) " +
-                "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
-        System.out.println(q);
-
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-        Statement state = conn.createStatement();
-        ResultSet rs = state.executeQuery(q);
-
-        while (rs.next()) {
-            searchResults.add(
-                    new Course(rs.getString("course_name"), rs.getString("capacity"), rs.getString("open_closed"), rs.getString("year"),
-                            rs.getString("delivery_mode"), rs.getString("day_of_lecture"), rs.getString("time_of_lecture"),
-                            rs.getDouble("duration_of_lecture"), rs.getString("dates"))
-            );
-        }
-
-        conn.close();
-        state.close();
+        searchResults = allCourses.show(searchResults);
         tableCourses.setItems(searchResults);
-
         return searchResults;
 
     }
@@ -234,7 +197,7 @@ public class DashboardController implements Initializable {
     public void SignOut(ActionEvent event) throws IOException {
         CurrentUser.ResetUser();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("LogIn.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("LogIn.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Sign In");
@@ -258,241 +221,21 @@ public class DashboardController implements Initializable {
         searchResults.clear();
         tableCourses.setItems(courses);
     }
-
-    public int GetDbCourseId() throws SQLException {
-        Course c = tableCourses.getSelectionModel().getSelectedItem();
-        System.out.println(c.getName());
-
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-
-        String q =  "SELECT course_id FROM courses WHERE course_name = '" + c.getName() +  "'";
-        Statement state = conn.createStatement();
-        ResultSet rs = state.executeQuery(q);
-
-
-        while (rs.next()) {
-            course_id = Integer.parseInt(rs.getString("course_id"));
-            System.out.println(course_id);
-        }
-
-        conn.close();
-        state.close();
-
-        return course_id;
-    }
-
-    public boolean IsEnrolled() throws SQLException {
-
-        Course c = tableCourses.getSelectionModel().getSelectedItem();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-        String q = "SELECT COUNT(*) AS total FROM student_enrolled_courses WHERE course_id = " + GetDbCourseId() + " AND " +
-                "student_id LIKE '%" + CurrentUser.getUserId() + "%'";
-        Statement state = conn.createStatement();
-        ResultSet rs = state.executeQuery(q);
-        System.out.println(q);
-
-        resultSize = Integer.parseInt(rs.getString("total"));
-        System.out.println("result size:  " + resultSize);
-
-        if (resultSize > 0) {
-            System.out.println("Enrolled, returning true");
-            conn.close();
-            state.close();
-            rs.close();
-            return true;
-        }
-        conn.close();
-        state.close();
-        rs.close();
-        return false;
-    }
-
-    public void CourseCloseCheck() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-        Statement state = conn.createStatement();
-        String q = "UPDATE courses SET open_closed = 'CLOSED' WHERE capacity = 0";
-        state.executeUpdate(q);
-        UpdateTable();
-        conn.close();
-        state.close();
-    }
-
-    public void RemoveCourseSlot(Course c) throws SQLException {
-        if (!c.getCapacity().equals("N/A")) {
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-            Statement state = conn.createStatement();
-            String q = "UPDATE courses SET capacity = capacity - 1 " +
-                    "WHERE course_name LIKE '%" + c.getName() + "%'";
-            state.executeUpdate(q);
-            UpdateTable();
-            conn.close();
-            state.close();
-            CourseCloseCheck();
-        }
-    }
-
-    public void CourseOpenCheck() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-        Statement state = conn.createStatement();
-        String q = "UPDATE courses SET open_closed = 'OPEN' WHERE capacity > 0";
-        state.executeUpdate(q);
-        UpdateTable();
-        conn.close();
-        state.close();
-    }
-
-    public void AddCourseSlot(Course c) throws SQLException {
-        if (!c.getCapacity().equals("N/A")) {
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-            Statement state = conn.createStatement();
-            String q = "UPDATE courses SET capacity = capacity + 1 " +
-                    "WHERE course_name LIKE '%" + c.getName() + "%'";
-
-            state.executeUpdate(q);
-            UpdateTable();
-
-            conn.close();
-            state.close();
-
-            CourseOpenCheck();
-        }
-    }
-
-    public boolean CheckCourseAvailability(Course c) throws SQLException {
-        if (!c.getCapacity().equals("N/A")) {
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-            Statement state = conn.createStatement();
-
-            String q = "SELECT * FROM courses WHERE course_name LIKE '%" + c.getName() + "%'";
-            ResultSet rs = state.executeQuery(q);
-
-            if (rs.getString("open_closed").equals("CLOSED")) {
-                System.out.println("COURSE IS CLOSED");
-                conn.close();
-                state.close();
-                rs.close();
-                return false;
-            }
-
-            else {
-                conn.close();
-                state.close();
-                rs.close();
-                System.out.println("COURSE IS OPEN");
-                return true;
-            }
-        }
-        System.out.println("COURSE IS OPEN");
-        return true;
-    }
-
     public void Export() throws SQLException, IOException {
         System.out.println("Exporting");
 
-        String q = "SELECT * FROM (student_enrolled_courses INNER JOIN courses " +
-                "ON student_enrolled_courses.course_id = courses.course_id) " +
-                "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
-        System.out.println(q);
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-        Statement state = conn.createStatement();
-        ResultSet rs = state.executeQuery(q);
+        courseExport.export(txtFirstName.getText(), txtLastName.getText(), txtStudentId.getText());
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter("src\\database\\enrollment.txt"));
-        bw.write(txtFirstName.getText() + " " + txtLastName.getText() + ", " + txtStudentId.getText() + "\n\n");
-
-        while (rs.next()) {
-            bw.write("Course: " + rs.getString("course_name") + "\n" +
-                    "Year: " + rs.getString("year") + "\n" +
-                    "Delivery: " + rs.getString("delivery_mode") + "\n" +
-                    "Day: " + rs.getString("day_of_lecture") + "\n" +
-                    "Time: " + rs.getString("time_of_lecture") + "\n" +
-                    "Duration (hours): " + rs.getDouble("duration_of_lecture") + "\n" +
-                    "Dates: " + rs.getString("dates") + "\n\n");
-        }
-        bw.close();
-        conn.close();
         labelMessage.setTextFill(WHITE);
         labelMessage.setText("Enrolled courses exported as .txt!");
     }
 
-    public boolean IsClash(Course c) throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:src\\database\\mytimetable.db");
-        Statement state = conn.createStatement();
-        String q = "SELECT * FROM (student_enrolled_courses INNER JOIN courses " +
-                "ON student_enrolled_courses.course_id = courses.course_id) " +
-                "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
-
-        ResultSet rs = state.executeQuery(q);
-
-        double enrollingStartTime = StringTimeToDouble(c.getTime());
-        double enrollingFinishTime = enrollingStartTime+ DurationToRealTime(c.getDuration());
-        System.out.println("enrollingStartTime " + enrollingStartTime + "\nEnrolling finish time: " + enrollingFinishTime);
-
-        while (rs.next()) {
-            if (rs.getString("day_of_lecture").equals(c.getDay())) {
-                double clashStartTime = DurationToRealTime(StringTimeToDouble(rs.getString("time_of_lecture")));
-                System.out.println("Clash start time: " + clashStartTime);
-                //clashFinishTime = clash start time (in actual hours) + its duration
-
-                double clashFinishTime = StringTimeToDouble(rs.getString("time_of_lecture")) +
-                        DurationToRealTime(rs.getDouble("duration_of_lecture"));
-                System.out.println("Clash finish time: " + clashFinishTime);
-
-                if (enrollingStartTime > clashStartTime && enrollingStartTime < clashFinishTime) {
-                    System.out.println("SHOULD BE A CLASH!!!");
-                    conn.close();
-                    state.close();
-                    rs.close();
-                    return true;
-                }
-                //If you are trying to enroll in a course where a clashing time is earlier than the enrolling course time
-                if (enrollingStartTime < clashStartTime) {
-                    if (clashStartTime > enrollingStartTime && clashStartTime < enrollingFinishTime) {
-                        System.out.println("SHOULD BE A CLASH 222!!!");
-                        conn.close();
-                        state.close();
-                        rs.close();
-                        return true;
-                    }
-                }
-            }
-        }
-        System.out.println("SHOULD BE GOOD TO GO");
-        conn.close();
-        state.close();
-        rs.close();
-        return false;
-
-    }
-
-    public Double StringTimeToDouble(String inputTime) {
-        //Use doubles becuase we are working with 'duration' which needs to be a double
-
-        String[] timeSplit = inputTime.split(":");
-        double dHour = Double.parseDouble(timeSplit[0]);
-        double dMinute = Double.parseDouble(timeSplit[1]) / 100;
-
-        Double realTime = dHour + dMinute;
-
-        return realTime;
-    }
-
-    //To convert duration only. Start time is already in real time.
-    public double DurationToRealTime(double inputTime) {
-        double leftOver = inputTime % 1;
-        double hour = inputTime - leftOver;
-        double realLeftOver = (leftOver * (60/1) / 100);
-        double realTime = hour + realLeftOver;
-        return realTime;
-    }
-
     public void ChangeAccountDetailsScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("AccountDetailsView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("AccountDetailsView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Course Enrollment!");
         stage.setScene(scene);
         stage.show();
     }
-
 }

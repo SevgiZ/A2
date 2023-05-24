@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -78,7 +77,7 @@ public class AccountDetailsController implements Initializable {
     }
 
     public void LogInScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogInView.class.getResource("Dashboard.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("Dashboard.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 1220, 517);
         stage.setTitle("myTimetable - Sign In");
