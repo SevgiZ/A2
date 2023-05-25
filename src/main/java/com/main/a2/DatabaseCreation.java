@@ -37,7 +37,6 @@ public class DatabaseCreation {
                     "last_name TEXT NOT NULL,\n" +
                     "password TEXT NOT NULL\n" +
                     ");";
-
             String createCourses = "CREATE TABLE IF NOT EXISTS courses (\n" +
                     "course_id INTEGER PRIMARY KEY,\n" +
                     "course_name TEXT NOT NULL,\n" +
@@ -51,7 +50,6 @@ public class DatabaseCreation {
                     "dates TEXT NOT NULL,\n" +
                     "slots_left INT NOT NULL" +
                     ");";
-
             String createEnrolledCourses = "CREATE TABLE IF NOT EXISTS student_enrolled_courses (\n" +
                     "enrolled_course_num INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                     "student_id TEXT NOT NULL,\n" +
@@ -59,13 +57,11 @@ public class DatabaseCreation {
                     "FOREIGN KEY (student_id) REFERENCES students (student_id),\n" +
                     "FOREIGN KEY (course_id) REFERENCES courses (id)\n" +
                     ");";
-
             String createCurrentUser = "CREATE TABLE current_user (\n" +
                     "username TEXT NOT NULL,\n" +
                     "signed_in INTEGER NOT NULL,\n" +
                     "FOREIGN KEY (username) REFERENCES students (username)\n" +
                     ");";
-
             state.executeUpdate(createStudents);
             state.executeUpdate(createCourses);
             state.executeUpdate(createEnrolledCourses);

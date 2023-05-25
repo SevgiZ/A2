@@ -3,9 +3,8 @@ package com.main.a2;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.util.ArrayList;
 
-public class AllCourses {
+public class EnrolledCoursesShow {
 
     public ObservableList<Course> show(ObservableList<Course> searchResults) throws SQLException {
         //Gets all the details of the courses that the specific student is enrolled in.

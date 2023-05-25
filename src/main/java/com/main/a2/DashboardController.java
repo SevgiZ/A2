@@ -10,7 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -76,10 +75,10 @@ public class DashboardController implements Initializable {
     private Label labelMessage;
 
     Enrollment dashEnroll = new Enrollment();
-    TimetableChecks timetableCheck = new TimetableChecks();
+    EnrollmentChecks timetableCheck = new EnrollmentChecks();
     CourseSlots courseSlots = new CourseSlots();
     Withdraw withdraw = new Withdraw();
-    AllCourses allCourses = new AllCourses();
+    EnrolledCoursesShow enrolledCoursesShow = new EnrolledCoursesShow();
     CourseExport courseExport = new CourseExport();
     LogInUserDetails userDetails = new LogInUserDetails();
 
@@ -140,8 +139,6 @@ public class DashboardController implements Initializable {
 
             dashEnroll.enroll(timetableCheck.GetDbCourseId(c), c);
 
-            //dashTable.updateTable();
-
             labelMessage.setTextFill(WHITE);
             labelMessage.setText("Enrolled in: " + c.getName() + " @ " + c.getDay() + ", " + c.getTime());
         }
@@ -164,7 +161,6 @@ public class DashboardController implements Initializable {
             labelMessage.setText("Something went wrong!");
             labelMessage.setTextFill(RED);
         }
-
     }
 
     //WITHDRAWING WORKS FINE
@@ -187,7 +183,7 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Course> ShowEnrolledCourses() throws SQLException {
         searchResults.clear();
-        searchResults = allCourses.show(searchResults);
+        searchResults = enrolledCoursesShow.show(searchResults);
         tableCourses.setItems(searchResults);
         return searchResults;
 
@@ -234,6 +230,15 @@ public class DashboardController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AccountDetailsView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
+        stage.setTitle("myTimetable - Course Enrollment!");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void ChangeTimetableScene(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Timetable.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader.load(), 936, 976);
         stage.setTitle("myTimetable - Course Enrollment!");
         stage.setScene(scene);
         stage.show();

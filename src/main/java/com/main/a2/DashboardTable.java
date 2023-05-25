@@ -69,7 +69,5 @@ public class DashboardTable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        //tableCourses.setItems(courses);
-        //return tableCourses;
     }
 }

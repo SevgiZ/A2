@@ -1,12 +1,11 @@
 package com.main.a2;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CourseSlots {
-    TimetableChecks timetableChecks = new TimetableChecks();
+    EnrollmentChecks enrollmentChecks = new EnrollmentChecks();
 
     public void AddCourseSlot(Course c) throws SQLException {
         if (!c.getCapacity().equals("N/A")) {
@@ -21,7 +20,7 @@ public class CourseSlots {
             conn.close();
             state.close();
 
-            timetableChecks.CourseOpenCheck();
+            enrollmentChecks.CourseOpenCheck();
         }
     }
 
@@ -35,7 +34,7 @@ public class CourseSlots {
             //dashTable.updateTable();
             conn.close();
             state.close();
-            timetableChecks.CourseCloseCheck();
+            enrollmentChecks.CourseCloseCheck();
         }
     }
 }

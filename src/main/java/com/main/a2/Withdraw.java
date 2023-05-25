@@ -1,12 +1,11 @@
 package com.main.a2;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Withdraw {
-    TimetableChecks timetableCheck = new TimetableChecks();
+    EnrollmentChecks timetableCheck = new EnrollmentChecks();
 
     public void withdraw(Course c) throws SQLException {
         String q = "DELETE FROM student_enrolled_courses WHERE course_id = " + timetableCheck.GetDbCourseId(c) + " AND student_id LIKE " +
