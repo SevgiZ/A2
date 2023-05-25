@@ -210,7 +210,7 @@ public class DashboardController implements Initializable {
         searchTerm = fieldSearch.getText();
 
         for (int i=0;i< courses.size();i++) {
-            if (courses.get(i).getName().contains(searchTerm)) {
+            if (courses.get(i).getName().toLowerCase().contains(searchTerm.toLowerCase())) {
                 searchResults.add(courses.get(i));
             }
         }

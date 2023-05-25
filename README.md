@@ -12,9 +12,6 @@ MVC View
 
 Proper timetable view (like allocate+)
 
-Search should be case insensitive
-
-
 ***
 Encrypted passwords*
 
