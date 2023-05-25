@@ -219,9 +219,7 @@ public class DashboardController implements Initializable {
     }
     public void Export() throws SQLException, IOException {
         System.out.println("Exporting");
-
         courseExport.export(txtFirstName.getText(), txtLastName.getText(), txtStudentId.getText());
-
         labelMessage.setTextFill(WHITE);
         labelMessage.setText("Enrolled courses exported as .txt!");
     }
