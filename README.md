@@ -6,9 +6,6 @@ For assignment 2 of Further Programming 2023 sem 1
 TODO:
 
 MVC View
-
-Proper timetable view (like allocate+)
-
 ***
 Encrypted passwords*
 
