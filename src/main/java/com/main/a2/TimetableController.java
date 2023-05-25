@@ -84,10 +84,6 @@ public class TimetableController implements Initializable {
         }
     }
 
-    public void Export() {
-
-    }
-
     //Holy fuck this is lazy
     public ArrayList<Label> getAllLabels() {
         allCourses.add(Math);
