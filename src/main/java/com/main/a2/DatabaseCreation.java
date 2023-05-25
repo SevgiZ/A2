@@ -61,9 +61,9 @@ public class DatabaseCreation {
                     ");";
 
             String createCurrentUser = "CREATE TABLE current_user (\n" +
-                    "student_id TEXT NOT NULL,\n" +
+                    "username TEXT NOT NULL,\n" +
                     "signed_in INTEGER NOT NULL,\n" +
-                    "FOREIGN KEY (student_id) REFERENCES students (student_id)\n" +
+                    "FOREIGN KEY (username) REFERENCES students (username)\n" +
                     ");";
 
             state.executeUpdate(createStudents);

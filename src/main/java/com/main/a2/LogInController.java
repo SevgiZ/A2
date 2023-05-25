@@ -5,10 +5,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -33,6 +35,7 @@ public class LogInController implements Initializable {
     private Label txtLoginError;
 
     private boolean firstTimeSetup;
+
 
     LogInUserDetails logUserDetails = new LogInUserDetails();
     DatabaseCreation dbCreate = new DatabaseCreation();
@@ -60,7 +63,6 @@ public class LogInController implements Initializable {
             } catch (Exception e) {
                 System.out.println("Something went wrong while trying to create DB!");
             }
-
         }
 
     }
@@ -84,11 +86,11 @@ public class LogInController implements Initializable {
             CurrentUser user = logUserDetails.getUserDetails(username);
             CurrentUser.SetUserInstance(user);
             System.out.println(user);
+            logUserDetails.updateCurrentUser(user.getUserId());
 
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Dashboard.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(fxmlLoader.load(), 1220, 517);
-            stage.setTitle("myTimetable - Course Enrollment!");
+            Parent parent = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
+            Scene scene = new Scene(parent);
+            Stage stage = (Stage)fieldPassword.getParent().getScene().getWindow();
             stage.setScene(scene);
             stage.show();
             }

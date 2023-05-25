@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -83,6 +84,7 @@ public class DashboardController implements Initializable {
     Withdraw withdraw = new Withdraw();
     AllCourses allCourses = new AllCourses();
     CourseExport courseExport = new CourseExport();
+    LogInUserDetails userDetails = new LogInUserDetails();
 
 
     public void setDashboardDetails() {
@@ -194,8 +196,9 @@ public class DashboardController implements Initializable {
 
     }
 
-    public void SignOut(ActionEvent event) throws IOException {
+    public void SignOut(ActionEvent event) throws IOException, SQLException {
         CurrentUser.ResetUser();
+        userDetails.removeCurrentUser();
 
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("LogIn.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -238,4 +241,5 @@ public class DashboardController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
 }

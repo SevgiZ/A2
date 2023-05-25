@@ -29,7 +29,7 @@ FOREIGN KEY (course_id) REFERENCES courses (id)
 );
 
 CREATE TABLE current_user (
-student_id TEXT NOT NULL,
+username TEXT NOT NULL,
 signed_in INTEGER NOT NULL,
-FOREIGN KEY (student_id) REFERENCES students (student_id)
+FOREIGN KEY (username) REFERENCES students (username)
 );

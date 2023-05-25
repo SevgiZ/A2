@@ -21,6 +21,44 @@ public class LogInUserDetails {
         return user;
     }
 
+    public void updateCurrentUser(String student_id) throws SQLException {
+        Connection conn = DatabaseConnection.getConnection();
+        Statement state = conn.createStatement();
+
+        String q = "INSERT INTO current_user VALUES ('" + student_id + "', 1)";
+
+        state.executeUpdate(q);
+        conn.close();
+        state.close();
+    }
+
+    public String checkCurrentUser() throws SQLException {
+        String username = null;
+        String q = "SELECT * FROM current_user";
+
+        Connection conn = DatabaseConnection.getConnection();
+        Statement state = conn.createStatement();
+        ResultSet rs = state.executeQuery(q);
+
+        //while (rs.next()) {
+            username = rs.getString("username");
+        //}
+
+        conn.close();
+        state.close();
+        System.out.println(username);
+        return username;
+    }
+
+    public void removeCurrentUser() throws SQLException {
+        String q = "DELETE FROM current_user WHERE signed_in = 1";
+        Connection conn = DatabaseConnection.getConnection();
+        Statement state = conn.createStatement();
+        state.executeUpdate(q);
+        conn.close();
+        state.close();
+    }
+
     public boolean verifyUsername(String username) throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
         String query = "SELECT * FROM students";
