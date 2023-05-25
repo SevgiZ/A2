@@ -5,7 +5,6 @@ For assignment 2 of Further Programming 2023 sem 1
 
 TODO:
 
-CREATE TABLE IF NOT exists and import the proper data
 
 Stay logged in between sessions
 
