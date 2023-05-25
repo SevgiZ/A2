@@ -12,7 +12,6 @@ public class Enrollment {
         String q = "INSERT INTO student_enrolled_courses (student_id, course_id) " +
                 "VALUES ('" + CurrentUser.getUserId() + "', " + courseId + ");";
 
-
         Connection conn = DatabaseConnection.getConnection();
         Statement state = conn.createStatement();
 

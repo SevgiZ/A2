@@ -1,8 +1,8 @@
-0,Course name,Capacity,Open/Closed,Year,Delivery mode,Day of lecture,Time of lecture,Duration of lecture (hour),Dates
-1,Java programming,120,OPEN,Year 1,Face-to-face,Wednesday,11:30,2,1/3-31/5
-2,Programming skills,500,OPEN,Year 1,Face-to-face,Tuesday,8:30,1,1/3-31/5
-3,Advanced Python programming,40,OPEN,Year 2,Face-to-face,Friday,16:00,1.5,1/3-31/5
-4,Math,300,OPEN,Year 1,Online,Wednesday,9:00,2,1/3-31/5
-5,Data mining,120,OPEN,Year 3,Online,Thursday,12:00,2,1/3-31/5
-6,Knowledge technologies,240,OPEN,Year 2,Face-to-face,Friday,14:00,2,1/3-31/5
-7,Algorithms and complexity,240,OPEN,Year 2,Face-to-face,Tuesday,10:00,1.5,1/3-31/5
+0,Course name,Capacity,Open/Closed,Year,Delivery mode,Day of lecture,Time of lecture,Duration of lecture (hour),Dates,slotsLeft
+1,Java programming,120,OPEN,Year 1,Face-to-face,Wednesday,11:30,2,1/3-31/5,120
+2,Programming skills,500,OPEN,Year 1,Face-to-face,Tuesday,8:30,1,1/3-31/5,500
+3,Advanced Python programming,40,OPEN,Year 2,Face-to-face,Friday,16:00,1.5,1/3-31/5,40
+4,Math,300,OPEN,Year 1,Online,Wednesday,9:00,2,1/3-31/5,300
+5,Data mining,120,OPEN,Year 3,Online,Thursday,12:00,2,1/3-31/5,120
+6,Knowledge technologies,240,OPEN,Year 2,Face-to-face,Friday,14:00,2,1/3-31/5,240
+7,Algorithms and complexity,240,OPEN,Year 2,Face-to-face,Tuesday,10:00,1.5,1/3-31/5,240

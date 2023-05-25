@@ -3,6 +3,7 @@ package com.main.a2;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -10,10 +11,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.*;
+import java.util.ResourceBundle;
 
-public class LogInController {
+public class LogInController implements Initializable {
     private Stage stage;
     private Statement state;
     private String username;
@@ -28,7 +32,38 @@ public class LogInController {
     @FXML
     private Label txtLoginError;
 
+    private boolean firstTimeSetup;
+
     LogInUserDetails logUserDetails = new LogInUserDetails();
+    DatabaseCreation dbCreate = new DatabaseCreation();
+
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        //Checks to see if the database file already exists
+        //Done we know if we should bother try creating and populating the tables
+        File f = new File("src\\database\\myTimetable.db");
+
+        if (f.exists() && !f.isDirectory()) {
+            System.out.println("Database already exists!");
+            firstTimeSetup = false;
+        } else {
+            System.out.println("DB doesn't exist, running first time setup for DB!");
+            firstTimeSetup = true;
+        }
+
+        if (firstTimeSetup) {
+            try {
+                dbCreate.createDatabase();
+                dbCreate.createTables();
+                dbCreate.populate();
+                firstTimeSetup = false;
+
+            } catch (Exception e) {
+                System.out.println("Something went wrong while trying to create DB!");
+            }
+
+        }
+
+    }
 
     public void CreateAccountScene(ActionEvent event) throws  IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("CreateAccount.fxml"));

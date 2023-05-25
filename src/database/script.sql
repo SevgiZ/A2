@@ -17,6 +17,7 @@ day_of_lecture TEXT NOT NULL,
 time_of_lecture TEXT NOT NULL,
 duration_of_lecture DOUBLE NOT NULL,
 dates TEXT NOT NULL
+slots_left INT NOT NULL
 );
 
 CREATE TABLE student_enrolled_courses (
@@ -25,4 +26,10 @@ student_id TEXT NOT NULL,
 course_id INTEGER NOT NULL,
 FOREIGN KEY (student_id) REFERENCES students (student_id),
 FOREIGN KEY (course_id) REFERENCES courses (id)
+);
+
+CREATE TABLE current_user (
+student_id TEXT NOT NULL,
+signed_in INTEGER NOT NULL,
+FOREIGN KEY (student_id) REFERENCES students (student_id)
 );
