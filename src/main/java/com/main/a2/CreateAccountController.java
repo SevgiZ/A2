@@ -40,6 +40,7 @@ public class CreateAccountController {
 
     @FXML
     private Label txtIdError;
+    CreateAccount createAccount = new CreateAccount();
 
     public void LogInScene(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("LogIn.fxml"));
@@ -51,76 +52,25 @@ public class CreateAccountController {
     }
 
     public void CreateAccount() throws SQLException {
-        System.out.println("Connecting to DB CREATE ACCOUNT");
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            if (conn != null) {
-                System.out.println("DB CREATE ACCOUNT: Connected to database");
-            }
+        username = fieldCreateUsername.getText();
+        studentId = fieldCreateStudentId.getText();
+        firstName = fieldCreateFirstName.getText();
+        lastName = fieldCreateLastName.getText();
+        password = fieldCreatePassword.getText();
 
-            username = fieldCreateUsername.getText();
-            studentId = fieldCreateStudentId.getText();
-            firstName = fieldCreateFirstName.getText();
-            lastName = fieldCreateLastName.getText();
-            password = fieldCreatePassword.getText();
+        //Cant have these in if statements because wont trigger both error messages
+        boolean userCheck = createAccount.existingUsername(username, txtUsernameError);
+        boolean idCheck = createAccount.existingStudentId(studentId, txtIdError);
 
-            //Cant have these in if statements because wont trigger both error messages
-            boolean userCheck = ExistingUsername(conn, username);
-            boolean idCheck = ExistingStudentId(conn, studentId);
-
-            if (!userCheck && !idCheck) {
-
-                String query = "INSERT INTO students VALUES ('" + username + "', '" + studentId +
-                        "', '" + firstName + "', '" + lastName + "', '" + password + "'" + ")";
-                System.out.println(query);
-                Statement state = conn.createStatement();
-                state.executeUpdate(query);
-                state.close();
-                conn.close();
-            }
-
-            else {
-                System.out.println("Details already exist!");
-            }
+        if (userCheck || idCheck) {
+            System.out.println("Error! Details already exist!");
+        } else {
+            createAccount.create(username, studentId, firstName, lastName, password);
         }
-        catch (Exception e) {
-            System.out.println("Couldn't connect: " + e);
-        }
+
     }
 
-    public boolean ExistingUsername(Connection conn, String username) throws SQLException {
-        String query = "SELECT * FROM students";
-        Statement state = conn.createStatement();
-        ResultSet rs = state.executeQuery(query);
 
-        while (rs.next()) {
-            System.out.println(rs.getString("username"));
-            if (rs.getString("username").equals(username)) {
-                txtUsernameError.setText("Username already taken!");
-                conn.close();
-                return true;
-            }
-        }
-        txtUsernameError.setText("");
-        return false;
-    }
-
-    public boolean ExistingStudentId(Connection conn, String username) throws SQLException {
-        String query = "SELECT * FROM students";
-        Statement state = conn.createStatement();
-        ResultSet rs = state.executeQuery(query);
-
-        while (rs.next()) {
-            System.out.println(rs.getString("student_id"));
-            if (rs.getString("student_id").equals(studentId)) {
-                conn.close();
-                txtIdError.setText("Student ID already taken or invalid!");
-                return true;
-            }
-        }
-        txtIdError.setText("");
-        return false;
-    }
 
 
 }

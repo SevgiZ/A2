@@ -26,7 +26,6 @@ public class DashboardController implements Initializable {
     private String searchTerm;
     private ObservableList<Course> courses = FXCollections.observableArrayList();
     private ObservableList<Course> searchResults = FXCollections.observableArrayList();
-    private int course_id;
 
     @FXML
     private TableColumn<Course, String> capacity;
@@ -76,8 +75,6 @@ public class DashboardController implements Initializable {
     @FXML
     private Label labelMessage;
 
-    private int resultSize;
-    DashboardTable dashTable = new DashboardTable();
     Enrollment dashEnroll = new Enrollment();
     TimetableChecks timetableCheck = new TimetableChecks();
     CourseSlots courseSlots = new CourseSlots();

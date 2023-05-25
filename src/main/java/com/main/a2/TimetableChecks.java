@@ -6,9 +6,6 @@ import javafx.scene.control.TableView;
 import java.sql.*;
 
 public class TimetableChecks {
-    @FXML
-    private TableView<Course> tableCourses;
-    DashboardTable dashTable = new DashboardTable();
     TimeConversion timeConvert = new TimeConversion();
     private int resultSize;
     private int course_id;
@@ -16,7 +13,7 @@ public class TimetableChecks {
     public void CourseCloseCheck() throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
         Statement state = conn.createStatement();
-        String q = "UPDATE courses SET open_closed = 'CLOSED' WHERE capacity = 0";
+        String q = "UPDATE courses SET open_closed = 'CLOSED' WHERE slots_left = 0";
         state.executeUpdate(q);
         //dashTable.updateTable();
         conn.close();
@@ -26,7 +23,7 @@ public class TimetableChecks {
     public void CourseOpenCheck() throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
         Statement state = conn.createStatement();
-        String q = "UPDATE courses SET open_closed = 'OPEN' WHERE capacity > 0";
+        String q = "UPDATE courses SET open_closed = 'OPEN' WHERE slots_left > 0";
         state.executeUpdate(q);
         //dashTable.updateTable();
         conn.close();
