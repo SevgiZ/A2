@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TimetableController implements Initializable {
@@ -42,7 +43,12 @@ public class TimetableController implements Initializable {
 
     @FXML
     private Button btnDashboard;
+    @FXML
+    private Button btnVisible;
+
+    private ArrayList<Label> allCourses = new ArrayList<>();
     TimetableChecks timeCheck = new TimetableChecks();
+    private ArrayList<String> enrolled = new ArrayList<>();
     private Stage stage;
     public void DashboardScene(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Dashboard.fxml"));
@@ -55,10 +61,39 @@ public class TimetableController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        allCourses = getAllLabels();
+
+        Math.getId();
+
+
         try {
-            timeCheck.getCoursesStrip();
+            enrolled = timeCheck.getCoursesStrip();
+            for (int i=0;i<enrolled.size();i++) {
+                for (int x=0;x<allCourses.size();x++) {
+                    System.out.println(allCourses.get(x));
+                    if (enrolled.get(i).equals(allCourses.get(x).getId())) {
+                        allCourses.get(x).setVisible(true);
+                    }
+                }
+
+
+            }
         } catch (Exception e) {
-            System.out.println("Something went wrong!");
+            System.out.println("Something went wrong!" + e);
         }
+    }
+
+    //Holy fuck this is lazy
+    public ArrayList<Label> getAllLabels() {
+        allCourses.add(Math);
+        allCourses.add(Programmingskills);
+        allCourses.add(Knowledgetechnologies);
+        allCourses.add(Javaprogramming);
+        allCourses.add(Datamining);
+        allCourses.add(Algorithmsandcomplexity);
+        allCourses.add(Advancedpythonprogramming);
+
+        return allCourses;
     }
 }
