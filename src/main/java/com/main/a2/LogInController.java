@@ -70,7 +70,7 @@ public class LogInController implements Initializable {
     public void CreateAccountScene(ActionEvent event) throws  IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("CreateAccount.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 670, 487);
+        Scene scene = new Scene(fxmlLoader.load(), 670, 517);
         stage.setTitle("myTimetable - Create Account");
         stage.setScene(scene);
         stage.show();

@@ -40,6 +40,8 @@ public class CreateAccountController {
 
     @FXML
     private Label txtIdError;
+    @FXML
+    private Label labelAccCreated;
     CreateAccount createAccount = new CreateAccount();
 
     public void LogInScene(ActionEvent event) throws IOException {
@@ -64,8 +66,10 @@ public class CreateAccountController {
 
         if (userCheck || idCheck) {
             System.out.println("Error! Details already exist!");
+            labelAccCreated.setText("");
         } else {
             createAccount.create(username, studentId, firstName, lastName, password);
+            labelAccCreated.setText("Account created!");
         }
 
     }

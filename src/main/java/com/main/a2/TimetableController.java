@@ -61,14 +61,12 @@ public class TimetableController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         allCourses = getAllLabels();
-
-        Math.getId();
-
-
         try {
             enrolled = timeCheck.getCoursesStrip();
+
+            //Nested for loop. Checks to see if there are any matches between all your currently enrolled courses
+            //against all the courses in the system/timetable
             for (int i=0;i<enrolled.size();i++) {
                 for (int x=0;x<allCourses.size();x++) {
                     System.out.println(allCourses.get(x));
@@ -76,8 +74,6 @@ public class TimetableController implements Initializable {
                         allCourses.get(x).setVisible(true);
                     }
                 }
-
-
             }
         } catch (Exception e) {
             System.out.println("Something went wrong!" + e);
