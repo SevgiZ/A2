@@ -5,7 +5,11 @@ For assignment 2 of Further Programming 2023 sem 1
 
 TODO:
 
-MVC View
+MVC(?)
+
+General code cleanup/quality
+
+
 ***
 Encrypted passwords*
 
