@@ -14,7 +14,6 @@ public class EnrollmentChecksModel {
         Statement state = conn.createStatement();
         String q = "UPDATE courses SET open_closed = 'CLOSED' WHERE slots_left = 0";
         state.executeUpdate(q);
-        //dashTable.updateTable();
         conn.close();
         state.close();
     }
