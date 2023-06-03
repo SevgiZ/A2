@@ -1,6 +1,6 @@
-package com.main.a2;
+package com.main.model;
 
-public class Course {
+public class CourseModel {
     private String name;
     private String capacity;    //Capacity is a string to account for when it needs to be N/A
     private String year;
@@ -11,7 +11,7 @@ public class Course {
     private String openclosed;
     private String dates;
 
-    Course(String name, String capacity, String openclosed, String year, String delivery, String day, String time, double duration, String dates) {
+    CourseModel(String name, String capacity, String openclosed, String year, String delivery, String day, String time, double duration, String dates) {
         this.name = name;
         this.year = year;
         this.delivery = delivery;

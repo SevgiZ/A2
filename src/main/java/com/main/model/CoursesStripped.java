@@ -1,4 +1,4 @@
-package com.main.a2;
+package com.main.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -6,16 +6,16 @@ import javafx.collections.ObservableList;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class TimetableChecks {
-    EnrolledCoursesShow enrolledCourses = new EnrolledCoursesShow();
-    private ObservableList<Course> enrolled = FXCollections.observableArrayList();
+public class CoursesStripped {
+    private EnrolledCoursesShowModel enrolledCourses = new EnrolledCoursesShowModel();
+    private ObservableList<CourseModel> enrolled = FXCollections.observableArrayList();
     private ArrayList<String> coursesStrip = new ArrayList<>();
 
 
-    public ArrayList<String> getCoursesStrip() throws SQLException {
+    public ArrayList<String> getStripped() throws SQLException {
         enrolled = enrolledCourses.show(enrolled);
 
-        for (Course c : enrolled) {
+        for (CourseModel c : enrolled) {
             String name = c.getName().replaceAll("\\s+","");
             coursesStrip.add(name);
             System.out.println(name);

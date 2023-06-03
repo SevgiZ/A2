@@ -1,15 +1,15 @@
-package com.main.a2;
+package com.main.model;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import com.main.controller.CurrentUserHolder;
 
-public class CurrentUser {
+public class CurrentUserModel {
     private String username;
     private String firstName;
     private String lastName;
     private static String userId;
     private String password;
 
-    public CurrentUser(String username, String firstName, String lastName, String userId, String password) {
+    public CurrentUserModel(String username, String firstName, String lastName, String userId, String password) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -17,19 +17,19 @@ public class CurrentUser {
         this.password = password;
     }
 
-    public CurrentUser() {
+    public CurrentUserModel() {
 
     }
 
     public static void ResetUser() {
-        CurrentUser u = new CurrentUser();
+        CurrentUserModel u = new CurrentUserModel();
         CurrentUserHolder holder = CurrentUserHolder.getCurrentUser();
         holder.setCurrentUser(u);
 
         System.out.println(u.getFirstName() + u.getLastName() + u.getUsername() + u.getUserId());
     }
 
-    public static void SetUserInstance(CurrentUser u) {
+    public static void SetUserInstance(CurrentUserModel u) {
         CurrentUserHolder holder = CurrentUserHolder.getCurrentUser();
         holder.setCurrentUser(u);
     }

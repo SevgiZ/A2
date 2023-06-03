@@ -1,13 +1,15 @@
-package com.main.a2;
+package com.main.model;
+
+import com.main.controller.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class CourseSlots {
-    EnrollmentChecks enrollmentChecks = new EnrollmentChecks();
+public class CourseSlotsModel {
+    private EnrollmentChecksModel enrollmentChecks = new EnrollmentChecksModel();
 
-    public void AddCourseSlot(Course c) throws SQLException {
+    public void AddCourseSlot(CourseModel c) throws SQLException {
         if (!c.getCapacity().equals("N/A")) {
             Connection conn = DatabaseConnection.getConnection();
             Statement state = conn.createStatement();
@@ -24,7 +26,7 @@ public class CourseSlots {
         }
     }
 
-    public void RemoveCourseSlot(Course c) throws SQLException {
+    public void RemoveCourseSlot(CourseModel c) throws SQLException {
         if (!c.getCapacity().equals("N/A")) {
             Connection conn = DatabaseConnection.getConnection();
             Statement state = conn.createStatement();

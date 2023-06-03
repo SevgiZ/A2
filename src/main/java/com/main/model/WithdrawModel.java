@@ -1,15 +1,17 @@
-package com.main.a2;
+package com.main.model;
+
+import com.main.controller.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Withdraw {
-    EnrollmentChecks timetableCheck = new EnrollmentChecks();
+public class WithdrawModel {
+    private EnrollmentChecksModel timetableCheck = new EnrollmentChecksModel();
 
-    public void withdraw(Course c) throws SQLException {
+    public void withdraw(CourseModel c) throws SQLException {
         String q = "DELETE FROM student_enrolled_courses WHERE course_id = " + timetableCheck.GetDbCourseId(c) + " AND student_id LIKE " +
-                "'%" + CurrentUser.getUserId() + "%'";
+                "'%" + CurrentUserModel.getUserId() + "%'";
 
         System.out.println(q);
 

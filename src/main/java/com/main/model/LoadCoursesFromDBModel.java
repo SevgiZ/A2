@@ -1,19 +1,15 @@
-package com.main.a2;
+package com.main.model;
 
+import com.main.controller.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableView;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
 
-public class LoadCoursesFromDB {
-    private ObservableList<Course> courseList = FXCollections.observableArrayList();
+public class LoadCoursesFromDBModel {
+    private ObservableList<CourseModel> courseList = FXCollections.observableArrayList();
 
-    public static ObservableList<Course> Load(ObservableList<Course> courseList) throws SQLException {
+    public static ObservableList<CourseModel> Load(ObservableList<CourseModel> courseList) throws SQLException {
         try {
             Connection conn = DatabaseConnection.getConnection();
             String query = "SELECT * FROM courses";
@@ -21,7 +17,7 @@ public class LoadCoursesFromDB {
             ResultSet rs = state.executeQuery(query);
 
             while (rs.next()) {
-                courseList.add(new Course(rs.getString("course_name"), rs.getString("capacity"), rs.getString("open_closed"),
+                courseList.add(new CourseModel(rs.getString("course_name"), rs.getString("capacity"), rs.getString("open_closed"),
                         rs.getString("year"), rs.getString("delivery_mode"), rs.getString("day_of_lecture"),
                         rs.getString("time_of_lecture"), rs.getDouble("duration_of_lecture"), rs.getString("dates")));
             }

@@ -1,4 +1,4 @@
-package com.main.a2;
+package com.main.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

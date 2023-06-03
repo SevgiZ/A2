@@ -1,5 +1,8 @@
-package com.main.a2;
+package com.main.controller;
 
+import com.main.model.CurrentUserModel;
+import com.main.model.CreateDatabaseModel;
+import com.main.model.LogInUserDetailsModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -21,7 +23,6 @@ import java.util.ResourceBundle;
 
 public class LogInController implements Initializable {
     private Stage stage;
-    private Statement state;
     private String username;
     private String password;
 
@@ -37,8 +38,8 @@ public class LogInController implements Initializable {
     private boolean firstTimeSetup;
 
 
-    LogInUserDetails logUserDetails = new LogInUserDetails();
-    DatabaseCreation dbCreate = new DatabaseCreation();
+    private LogInUserDetailsModel logUserDetails = new LogInUserDetailsModel();
+    private CreateDatabaseModel dbCreate = new CreateDatabaseModel();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Checks to see if the database file already exists
@@ -68,7 +69,7 @@ public class LogInController implements Initializable {
     }
 
     public void CreateAccountScene(ActionEvent event) throws  IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("CreateAccount.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("CreateAccountView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 517);
         stage.setTitle("myTimetable - Create Account");
@@ -83,12 +84,12 @@ public class LogInController implements Initializable {
         //Set the current user details locally in the program. Used for details at top and something else
         //I forgot it's been 3 weeks
         if (logUserDetails.verifyPassword(password) && logUserDetails.verifyUsername(username)) {
-            CurrentUser user = logUserDetails.getUserDetails(username);
-            CurrentUser.SetUserInstance(user);
+            CurrentUserModel user = logUserDetails.getUserDetails(username);
+            CurrentUserModel.SetUserInstance(user);
             System.out.println(user);
             logUserDetails.updateCurrentUser(user.getUserId());
 
-            Parent parent = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
+            Parent parent = FXMLLoader.load(getClass().getResource("DashboardView.fxml"));
             Scene scene = new Scene(parent);
             Stage stage = (Stage)fieldPassword.getParent().getScene().getWindow();
             stage.setScene(scene);

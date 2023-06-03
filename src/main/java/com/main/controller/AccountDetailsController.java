@@ -1,5 +1,7 @@
-package com.main.a2;
+package com.main.controller;
 
+import com.main.model.ChangeDetailsModel;
+import com.main.model.CurrentUserModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,12 +35,12 @@ public class AccountDetailsController implements Initializable {
     @FXML
     private PasswordField fieldChangePassword;
 
-    ChangeDetails changeDetails = new ChangeDetails();
+    private ChangeDetailsModel changeDetails = new ChangeDetailsModel();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         CurrentUserHolder uh = CurrentUserHolder.getCurrentUser();
-        CurrentUser u = uh.getUser();
+        CurrentUserModel u = uh.getUser();
 
         fieldChangeFirstName.setText(u.getFirstName());
         fieldChangeLastName.setText(u.getFirstName());
@@ -53,7 +55,7 @@ public class AccountDetailsController implements Initializable {
     }
 
     public void LogInScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Dashboard.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("DashboardView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 1220, 517);
         stage.setTitle("myTimetable - Sign In");

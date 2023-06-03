@@ -1,5 +1,6 @@
-package com.main.a2;
+package com.main.model;
 
+import com.main.controller.DatabaseConnection;
 import javafx.scene.control.Label;
 
 import java.sql.Connection;
@@ -7,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class CreateAccount {
+public class CreateAccountModel {
     public void create(String username, String studentId, String firstName, String lastName, String password) {
         try {
             Connection conn = DatabaseConnection.getConnection();

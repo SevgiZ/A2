@@ -1,4 +1,4 @@
-package com.main.a2;
+package com.main.model;
 
 public class TimeConversion {
     public Double StringTimeToDouble(String inputTime) {

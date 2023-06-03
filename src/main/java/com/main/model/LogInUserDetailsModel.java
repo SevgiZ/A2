@@ -1,18 +1,20 @@
-package com.main.a2;
+package com.main.model;
+
+import com.main.controller.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class LogInUserDetails {
-    public CurrentUser getUserDetails(String username) throws SQLException {
+public class LogInUserDetailsModel {
+    public CurrentUserModel getUserDetails(String username) throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
 
         Statement state = conn.createStatement();
         ResultSet rs = state.executeQuery("SELECT * FROM students WHERE username = '" + username + "'");
 
-        CurrentUser user = new CurrentUser(rs.getString("username"), rs.getString("first_name"),
+        CurrentUserModel user = new CurrentUserModel(rs.getString("username"), rs.getString("first_name"),
                 rs.getString("last_name"), rs.getString("student_id"), rs.getString("password"));
 
         conn.close();

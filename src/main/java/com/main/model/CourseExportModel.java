@@ -1,17 +1,19 @@
-package com.main.a2;
+package com.main.model;
+
+import com.main.controller.DatabaseConnection;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 
-public class CourseExport {
+public class CourseExportModel {
     //Needing to pass arguments for this method is fucking lazy.
     //Do a better implementation later?
     public void export(String txtFirstName, String txtLastName, String txtStudentId) throws SQLException, IOException {
         String q = "SELECT * FROM (student_enrolled_courses INNER JOIN courses " +
                 "ON student_enrolled_courses.course_id = courses.course_id) " +
-                "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
+                "WHERE student_id LIKE '%" + CurrentUserModel.getUserId() + "%'";
         System.out.println(q);
         Connection conn = DatabaseConnection.getConnection();
         Statement state = conn.createStatement();

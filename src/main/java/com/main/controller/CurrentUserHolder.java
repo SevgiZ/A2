@@ -1,11 +1,13 @@
-package com.main.a2;
+package com.main.controller;
+
+import com.main.model.CurrentUserModel;
 
 public final class CurrentUserHolder {
     //This serves as a singleton class.
     //Store a single instance of a class/object and be able to access it anywhere in the program.
     // This one is used to store user details.
 
-    private CurrentUser user;
+    private CurrentUserModel user;
     private final static CurrentUserHolder CURRENT_USER = new CurrentUserHolder();
 
     private CurrentUserHolder() {
@@ -16,11 +18,11 @@ public final class CurrentUserHolder {
         return CURRENT_USER;
     }
 
-    public void setCurrentUser(CurrentUser user) {
+    public void setCurrentUser(CurrentUserModel user) {
         this.user = user;
     }
 
-    public CurrentUser getUser() {
+    public CurrentUserModel getUser() {
         return this.user;
     }
 }

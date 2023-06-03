@@ -1,7 +1,8 @@
-package com.main.a2;
+package com.main.model;
+
+import com.main.controller.DatabaseConnection;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -9,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DatabaseCreation {
+public class CreateDatabaseModel {
     public void createDatabase() {
         try {
             //Upon creating connection, if the database in the file not exists, then it'll be created automatically.

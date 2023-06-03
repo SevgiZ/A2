@@ -1,11 +1,14 @@
-package com.main.a2;
+package com.main.model;
+
+import com.main.controller.CurrentUserHolder;
+import com.main.controller.DatabaseConnection;
 
 import java.sql.*;
 
-public class ChangeDetails {
+public class ChangeDetailsModel {
     public void change(String fieldChangeFirstName, String fieldChangeLastName, String fieldChangePassword) throws SQLException {
         CurrentUserHolder uh = CurrentUserHolder.getCurrentUser();
-        CurrentUser u = uh.getUser();
+        CurrentUserModel u = uh.getUser();
 
         Connection conn = DatabaseConnection.getConnection();
         Statement state = conn.createStatement();
@@ -18,13 +21,13 @@ public class ChangeDetails {
 
         state.executeUpdate(q);
 
-        ResultSet rs = state.executeQuery("SELECT * FROM students WHERE username LIKE '%" + u.getUsername() + "%'");
+        ResultSet rs = state.executeQuery("SELECT * FROM students WHERE username = '" + u.getUsername() + "'");
 
         while (rs.next()) {
-            CurrentUser user = new CurrentUser(rs.getString("username"), rs.getString("first_name"),
+            CurrentUserModel user = new CurrentUserModel(rs.getString("username"), rs.getString("first_name"),
                     rs.getString("last_name"), rs.getString("student_id"), rs.getString("password"));
 
-            CurrentUser.SetUserInstance(user);
+            CurrentUserModel.SetUserInstance(user);
         }
 
         conn.close();

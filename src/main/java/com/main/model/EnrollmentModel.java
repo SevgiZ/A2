@@ -1,16 +1,17 @@
-package com.main.a2;
+package com.main.model;
+
+import com.main.controller.DatabaseConnection;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Enrollment {
-    CourseSlots courseSlots = new CourseSlots();
+public class EnrollmentModel {
+    private CourseSlotsModel courseSlots = new CourseSlotsModel();
 
-    public void enroll(int courseId, Course c) throws SQLException {
+    public void enroll(int courseId, CourseModel c) throws SQLException {
         String q = "INSERT INTO student_enrolled_courses (student_id, course_id) " +
-                "VALUES ('" + CurrentUser.getUserId() + "', " + courseId + ");";
+                "VALUES ('" + CurrentUserModel.getUserId() + "', " + courseId + ");";
 
         Connection conn = DatabaseConnection.getConnection();
         Statement state = conn.createStatement();

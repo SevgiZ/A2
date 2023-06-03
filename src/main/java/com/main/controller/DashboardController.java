@@ -1,5 +1,6 @@
-package com.main.a2;
+package com.main.controller;
 
+import com.main.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,41 +24,41 @@ import static javafx.scene.paint.Color.WHITE;
 public class DashboardController implements Initializable {
     private Stage stage;
     private String searchTerm;
-    private ObservableList<Course> courses = FXCollections.observableArrayList();
-    private ObservableList<Course> searchResults = FXCollections.observableArrayList();
+    private ObservableList<CourseModel> courses = FXCollections.observableArrayList();
+    private ObservableList<CourseModel> searchResults = FXCollections.observableArrayList();
 
     @FXML
-    private TableColumn<Course, String> capacity;
+    private TableColumn<CourseModel, String> capacity;
 
     @FXML
-    private TableColumn<Course, String> openclosed;
+    private TableColumn<CourseModel, String> openclosed;
 
     @FXML
-    private TableColumn<Course, String> courseName;
+    private TableColumn<CourseModel, String> courseName;
 
     @FXML
-    private TableColumn<Course, String> day;
+    private TableColumn<CourseModel, String> day;
 
     @FXML
-    private TableColumn<Course, String> delivery;
+    private TableColumn<CourseModel, String> delivery;
 
     @FXML
-    private TableColumn<Course, Double> duration;
+    private TableColumn<CourseModel, Double> duration;
 
     @FXML
     private TextField fieldSearch;
 
     @FXML
-    private TableView<Course> tableCourses;
+    private TableView<CourseModel> tableCourses;
 
     @FXML
-    private TableColumn<Course, String> time;
+    private TableColumn<CourseModel, String> time;
 
     @FXML
-    private TableColumn<Course, String> year;
+    private TableColumn<CourseModel, String> year;
 
     @FXML
-    private TableColumn<Course, String> dates;
+    private TableColumn<CourseModel, String> dates;
 
     @FXML
     private Label txtFirstName;
@@ -74,18 +75,18 @@ public class DashboardController implements Initializable {
     @FXML
     private Label labelMessage;
 
-    Enrollment dashEnroll = new Enrollment();
-    EnrollmentChecks timetableCheck = new EnrollmentChecks();
-    CourseSlots courseSlots = new CourseSlots();
-    Withdraw withdraw = new Withdraw();
-    EnrolledCoursesShow enrolledCoursesShow = new EnrolledCoursesShow();
-    CourseExport courseExport = new CourseExport();
-    LogInUserDetails userDetails = new LogInUserDetails();
+    private EnrollmentModel dashEnroll = new EnrollmentModel();
+    private EnrollmentChecksModel timetableCheck = new EnrollmentChecksModel();
+    private CourseSlotsModel courseSlots = new CourseSlotsModel();
+    private WithdrawModel withdraw = new WithdrawModel();
+    private EnrolledCoursesShowModel enrolledCoursesShow = new EnrolledCoursesShowModel();
+    private CourseExportModel courseExport = new CourseExportModel();
+    private LogInUserDetailsModel userDetails = new LogInUserDetailsModel();
 
 
     public void setDashboardDetails() {
         CurrentUserHolder holder = CurrentUserHolder.getCurrentUser();
-        CurrentUser user = holder.getUser();
+        CurrentUserModel user = holder.getUser();
 
         txtFirstName.setText(user.getFirstName());
         txtLastName.setText(user.getLastName());
@@ -97,22 +98,22 @@ public class DashboardController implements Initializable {
     public void updateTable() {
         try {
             courses.clear();
-            courses = LoadCoursesFromDB.Load(courses);
+            courses = LoadCoursesFromDBModel.Load(courses);
             Connection conn = DatabaseConnection.getConnection();
             String query = "SELECT * FROM courses";
             Statement state = conn.createStatement();
             ResultSet rs = state.executeQuery(query);
 
             while (rs.next()) {
-                courseName.setCellValueFactory(new PropertyValueFactory<Course, String>("name"));
-                capacity.setCellValueFactory(new PropertyValueFactory<Course, String>("capacity"));
-                openclosed.setCellValueFactory(new PropertyValueFactory<Course, String>("openclosed"));
-                year.setCellValueFactory(new PropertyValueFactory<Course, String>("year"));
-                delivery.setCellValueFactory(new PropertyValueFactory<Course, String>("delivery"));
-                day.setCellValueFactory(new PropertyValueFactory<Course, String>("day"));
-                time.setCellValueFactory(new PropertyValueFactory<Course, String>("time"));
-                duration.setCellValueFactory(new PropertyValueFactory<Course, Double>("duration"));
-                dates.setCellValueFactory(new PropertyValueFactory<Course, String>("dates"));
+                courseName.setCellValueFactory(new PropertyValueFactory<CourseModel, String>("name"));
+                capacity.setCellValueFactory(new PropertyValueFactory<CourseModel, String>("capacity"));
+                openclosed.setCellValueFactory(new PropertyValueFactory<CourseModel, String>("openclosed"));
+                year.setCellValueFactory(new PropertyValueFactory<CourseModel, String>("year"));
+                delivery.setCellValueFactory(new PropertyValueFactory<CourseModel, String>("delivery"));
+                day.setCellValueFactory(new PropertyValueFactory<CourseModel, String>("day"));
+                time.setCellValueFactory(new PropertyValueFactory<CourseModel, String>("time"));
+                duration.setCellValueFactory(new PropertyValueFactory<CourseModel, Double>("duration"));
+                dates.setCellValueFactory(new PropertyValueFactory<CourseModel, String>("dates"));
 
                 conn.close();
                 state.close();
@@ -132,10 +133,10 @@ public class DashboardController implements Initializable {
     }
 
     public void Enroll() throws SQLException {
-        Course c = tableCourses.getSelectionModel().getSelectedItem();
+        CourseModel c = tableCourses.getSelectionModel().getSelectedItem();
         if (!timetableCheck.IsEnrolled(c) && timetableCheck.CheckCourseAvailability(c) && !timetableCheck.IsClash(c)) {
 
-            System.out.println(CurrentUser.getUserId());
+            System.out.println(CurrentUserModel.getUserId());
 
             dashEnroll.enroll(timetableCheck.GetDbCourseId(c), c);
 
@@ -165,7 +166,7 @@ public class DashboardController implements Initializable {
 
     //WITHDRAWING WORKS FINE
     public void Withdraw() throws SQLException {
-        Course c = tableCourses.getSelectionModel().getSelectedItem();
+        CourseModel c = tableCourses.getSelectionModel().getSelectedItem();
         if (timetableCheck.IsEnrolled(c)) {
             withdraw.withdraw(c);
             courseSlots.AddCourseSlot(c);
@@ -181,7 +182,7 @@ public class DashboardController implements Initializable {
 
     }
 
-    public ObservableList<Course> ShowEnrolledCourses() throws SQLException {
+    public ObservableList<CourseModel> ShowEnrolledCourses() throws SQLException {
         searchResults.clear();
         searchResults = enrolledCoursesShow.show(searchResults);
         tableCourses.setItems(searchResults);
@@ -190,10 +191,10 @@ public class DashboardController implements Initializable {
     }
 
     public void SignOut(ActionEvent event) throws IOException, SQLException {
-        CurrentUser.ResetUser();
+        CurrentUserModel.ResetUser();
         userDetails.removeCurrentUser();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("LogIn.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("LogInView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 670, 487);
         stage.setTitle("myTimetable - Sign In");
@@ -234,7 +235,7 @@ public class DashboardController implements Initializable {
     }
 
     public void ChangeTimetableScene(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Timetable.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("TimetableView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 936, 976);
         stage.setTitle("myTimetable - Course Enrollment!");

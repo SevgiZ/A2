@@ -1,9 +1,11 @@
-package com.main.a2;
+package com.main.model;
+
+import com.main.controller.DatabaseConnection;
 
 import java.sql.*;
 
-public class EnrollmentChecks {
-    TimeConversion timeConvert = new TimeConversion();
+public class EnrollmentChecksModel {
+    private TimeConversion timeConvert = new TimeConversion();
     private int resultSize;
     private int course_id;
 
@@ -27,7 +29,7 @@ public class EnrollmentChecks {
         state.close();
     }
 
-    public boolean CheckCourseAvailability(Course c) throws SQLException {
+    public boolean CheckCourseAvailability(CourseModel c) throws SQLException {
         if (!c.getCapacity().equals("N/A")) {
             Connection conn = DatabaseConnection.getConnection();
             Statement state = conn.createStatement();
@@ -55,12 +57,12 @@ public class EnrollmentChecks {
         return true;
     }
 
-    public boolean IsClash(Course c) throws SQLException {
+    public boolean IsClash(CourseModel c) throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
         Statement state = conn.createStatement();
         String q = "SELECT * FROM (student_enrolled_courses INNER JOIN courses " +
                 "ON student_enrolled_courses.course_id = courses.course_id) " +
-                "WHERE student_id LIKE '%" + CurrentUser.getUserId() + "%'";
+                "WHERE student_id LIKE '%" + CurrentUserModel.getUserId() + "%'";
 
         ResultSet rs = state.executeQuery(q);
 
@@ -103,12 +105,12 @@ public class EnrollmentChecks {
         rs.close();
         return false;
     }
-    public boolean IsEnrolled(Course c) throws SQLException {
+    public boolean IsEnrolled(CourseModel c) throws SQLException {
 
         //Course c = tableCourses.getSelectionModel().getSelectedItem();
         Connection conn = DatabaseConnection.getConnection();
         String q = "SELECT COUNT(*) AS total FROM student_enrolled_courses WHERE course_id = " + GetDbCourseId(c) + " AND " +
-                "student_id LIKE '%" + CurrentUser.getUserId() + "%'";
+                "student_id LIKE '%" + CurrentUserModel.getUserId() + "%'";
         Statement state = conn.createStatement();
         ResultSet rs = state.executeQuery(q);
         System.out.println(q);
@@ -129,8 +131,7 @@ public class EnrollmentChecks {
         return false;
     }
 
-    public int GetDbCourseId(Course c) throws SQLException {
-        //Course c = tableCourses.getSelectionModel().getSelectedItem();
+    public int GetDbCourseId(CourseModel c) throws SQLException {
         System.out.println(c.getName());
 
         Connection conn = DatabaseConnection.getConnection();
